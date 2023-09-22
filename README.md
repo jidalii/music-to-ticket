@@ -1,1 +1,4 @@
-# cs411_group_project
+# CS411 Group Project
+
+## 1. Description
+ 
