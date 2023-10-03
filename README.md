@@ -17,5 +17,5 @@ We would be using MangoDB for the database
 3. Google Map API
 
 ## 5. Framework
-- frontend: typescrip
+- frontend: typescript
 - backend: EXPRESS.js
