@@ -1,7 +1,9 @@
 # CS411 Group Project
 
 ## 1. Description
-Our project is an web application is a library of users' own library with info of the concerts of the artists of the songs in their playlist and saved albums. Of course, users can play songs in their library.
+Our project is an web application is users' own spotify library with info of the concerts of the artists of the songs in their playlists and saved albums. Meanwhile, users can play songs in their library. 
+
+As for the concert info, the website illustrates the date and location of concerts, and shows the price range of different seats, similiar to Google Flight
 
 The entry of the website is the login interface. After the user logs in, users would be redirect to their spotify library. When user hook the mouse on the artists of the songs, the website would show the concerts of the artists nearby (users can set the range to define "nearby").
 
