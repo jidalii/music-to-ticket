@@ -19,7 +19,7 @@ router.get("/logout", (req, res) => {
 router.get(
     "/spotify",
     passport.authenticate("spotify", {
-        scope: ['user-read-email', 'user-read-private'],
+        scope: ['user-read-email', 'user-read-private', 'user-library-read', 'streaming', 'playlist-read-private'],
         showDialog: true,
         // accessType: 'offline',
         // prompt: 'consent',

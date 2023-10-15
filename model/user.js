@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    // _id: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
     spotifyId: {
         type: String,
         required: true,
@@ -17,6 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     username: String,
     country: String,
+    accessToken: String,
     refreshToken: String,
     expires_in: Number,
     // avatarUrl: String,
