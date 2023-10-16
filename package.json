@@ -1,0 +1,30 @@
+{
+  "name": "cs411-group-project",
+  "version": "1.0.0",
+  "description": "## 1. Description Our project is an web application of users' own spotify library with info about the artists' concerts based on their playlists and saved albums. Users can also play songs in their library.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.1",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "http-errors": "^2.0.0",
+    "mongodb": "^6.1.0",
+    "mongoose": "^7.6.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "passport": "^0.6.0",
+    "passport-spotify": "^2.0.0"
+  }
+}
