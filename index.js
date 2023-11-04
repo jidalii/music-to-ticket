@@ -12,11 +12,14 @@ const app = express()
 // db
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+require('./db_connection');
 
 
 require("./config/passport");
 const authRoutes = require("./routes/oauth");
 const profileRoutes = require("./routes/profile");
+const spotifyRoutes = require("./routes/spotifyapi");
+const ticketRoutes = require('./routes/events')
 
 // 1. Middleware for parsing requests
 app.use(express.json());
@@ -51,7 +54,8 @@ app.use(passport.authenticate('session'));
 // 5.Routers
 app.use("/auth", authRoutes);
 app.use("/profile", profileRoutes);
-// app.use("/api", frontendRoutes);
+app.use("/spotify", spotifyRoutes);
+app.use("/ticket", ticketRoutes)
 
 app.set("view engine", "ejs");
 
