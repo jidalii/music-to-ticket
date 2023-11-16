@@ -4,6 +4,7 @@ import Login from './components/Login'; // Assuming HomePage is in the same dire
 // import ContactPage from './ContactPage'; 
 import NavBar from './components/NavBar'
 import AboutPage from './pages/AboutPage'
+import ProfilePage from './pages/ProfilePage'
 import Footer from './components/Footer'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
       <Footer />

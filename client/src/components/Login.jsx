@@ -1,7 +1,6 @@
 import React from 'react';
 import '../tailwind.css'
 
-
 function Login() {
   return (
     <div className='flex h-screen justify-center items-center' style={{ height: 'calc(100vh - 4rem)'}}>
@@ -11,13 +10,12 @@ function Login() {
         </h1>
         <button 
           className="bg-spotify-green text-white px-5 py-2.5 inline-block text-lg m-1 cursor-pointer rounded-full font-bold"
-          >
+          onClick={() => window.location.href='http://localhost:8000/auth/spotify'}
+        >
           Login with Spotify
         </button>
       </div>
     </div>
-    
-  
   );
 }
 
