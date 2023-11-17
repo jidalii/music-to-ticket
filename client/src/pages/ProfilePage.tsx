@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function AboutPage() {
-    const [user, setUser] = useState(null);
+interface User {
+    username: string,
+    email: string,
+    avatar: string
+}
+
+
+function ProfilePage() {
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/auth/get-user', { withCredentials: true });
+                const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
                 setUser(response.data);
+                // USER_ID = response.data
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -21,17 +30,19 @@ function AboutPage() {
         <div>
             {user && (
                 <div>
-                    <h2 className='text-4xl text-spotify-white'>
+                    <h2 className='text-4xl'>
                         Welcome to Music to Ticket, {user.username}
                     </h2>
-                    <p className='text-2xl text-spotify-white'>
+                    <img src={user.avatar}/>
+                    {/* {AvatarShow(user.avatar)} */}
+                    <p className='text-2xl'>
                         Email: {user.email}
                     </p>
-                    {/* Display other user details as needed */}
+
                 </div>
             )}
         </div>
     );
 }
 
-export default AboutPage;
+export default ProfilePage;

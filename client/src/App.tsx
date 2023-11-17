@@ -1,11 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Login from './components/Login'; // Assuming HomePage is in the same directory
-// import AboutPage from './AboutPage'; // Adjust the path according to your file structure
-// import ContactPage from './ContactPage'; 
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 import AboutPage from './pages/AboutPage'
 import ProfilePage from './pages/ProfilePage'
-import Footer from './components/Footer'
 
 function App() {
   return (
