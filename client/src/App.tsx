@@ -4,21 +4,25 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import AboutPage from './pages/AboutPage'
 import ProfilePage from './pages/ProfilePage'
+import GalleryPage from './pages/GalleryPage'
 
 function App() {
   return (
     <Router>
       <NavBar />
-
       {/* Add padding to the top of your main content */}
       <div className="pt-16">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
         </Routes>
       </div>
-      <Footer />
+      <div>
+        <Footer />
+      </div>
+      
     </Router>
   );
 }
