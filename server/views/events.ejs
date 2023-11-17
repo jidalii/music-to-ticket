@@ -15,10 +15,10 @@
             <p>No upcoming events found.</p>
         <% } else { %>
             <% events.forEach(event => { %>
-                <div class="event">         // can add more info based on needs //
+                <div class="event">
                     <h2><%= event.name %></h2>
-                    <p>Date: <%= event.dates.start.localDate %></p>
-                    <p>Time: <%= event.dates.start.localTime %></p>
+                    <p>Date: <%= event.date %></p>
+                    <p>Time: <%= event.time %></p>
                     <a href="<%= event.url %>" target="_blank">More Info</a>
                 </div>
             <% }) %>

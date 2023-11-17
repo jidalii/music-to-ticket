@@ -5,13 +5,16 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const User = require('../model/user');
 const Spotify = require('../model/gallery');
+const Ticket = require('../model/ticket');
 
-const getAccessToken = async (user_id) => {
-    const user = await User.findOne(
+const getAccessToken = async (spotifyId) => {
+    console.log(spotifyId);
+    const user = await User.findOne({ spotifyId: spotifyId });
+    /*const user = await User.findOne(
         {
-            spotifyId: "31lbzo6ubfwku5s5xxmlhaxxooz4"
+            spotifyId: "31525gofi436ryheps2haspy5kq4"
         },
-    )
+    )*/
     // console.log(user);
     if (!user) {
         return res.status(404).send('User not found');
@@ -23,14 +26,16 @@ const getAccessToken = async (user_id) => {
     return user.accessToken.toString();
 }
 
-const updatePlaylist = async (user_id) => {
+const updatePlaylist = async (spotifyId) => {
     try{
         // api params
         const ACCESS_TOKEN = await getAccessToken();
-        const id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        if (!ACCESS_TOKEN) {
+            throw new Error('Access token not found');
+        }
 
         // api call
-        const response = await axios.get(`https://api.spotify.com/v1/users/${id}/playlists`, {
+        const response = await axios.get(`https://api.spotify.com/v1/users/${spotifyId}/playlists`, {
             headers: {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`
             }
@@ -44,14 +49,31 @@ const updatePlaylist = async (user_id) => {
 
 
         // store in mongodb
-        const user_id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        //const user_id = '31525gofi436ryheps2haspy5kq4'; //31lbzo6ubfwku5s5xxmlhaxxooz4
         try{
-            await Spotify.findOneAndUpdate(
-                { 'id': user_id }, // The filter to find the document
+            /*await Spotify.findOneAndUpdate(
+                { 'id': spotifyId }, // The filter to find the document
                 { $set: {playlist: playlist_ls} }, // The update operation
                 { upsert: true, new: true }
-            );
-            console.log("update playlist");
+            );*/
+
+            let galleryEntry = await Spotify.findOne({ id: spotifyId });
+
+            if (galleryEntry) {
+                // Update existing gallery entry
+                galleryEntry.playlist = playlist_ls;
+                await galleryEntry.save();
+            } else {
+                // Create a new gallery entry
+                galleryEntry = new Spotify({
+                    id: spotifyId,
+                    playlist: playlist_ls
+                });
+                await galleryEntry.save();
+            }
+
+
+            console.log("Playlist updated for user:", spotifyId);
         } catch(error){
             console.log('Error in upsert:', error);
         }
@@ -66,8 +88,8 @@ const updatePlaylist = async (user_id) => {
     }
 }
 
-const getPlaylist = async(user_id) => {
-    const playlist_obj = await Spotify.findOne({id: user_id}, 'playlist');
+const getPlaylist = async(spotifyId) => {
+    const playlist_obj = await Spotify.findOne({id: spotifyId}, 'playlist');
     // console.log(playlist_obj.playlist);
     return playlist_obj.playlist;
 }
@@ -75,7 +97,7 @@ const getPlaylist = async(user_id) => {
 router.get('/v0/playlist', async(req, res) => {
     try{
         const ACCESS_TOKEN = await getAccessToken();
-        const USER_ID = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        const USER_ID = req.query.spotifyId;
         const response = await axios.get(`https://api.spotify.com/v1/users/${USER_ID}/playlists`, {
             headers: {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`
@@ -86,7 +108,7 @@ router.get('/v0/playlist', async(req, res) => {
         response.data.items.forEach(item => {
             playlist_ls.push(item.id);
         });
-        const user_id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        const user_id = req.session.spotifyId;
         // store in mongodb
         try{
             await Spotify.findOneAndUpdate(
@@ -114,7 +136,7 @@ router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
         const ACCESS_TOKEN = await getAccessToken();
-        const user_id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        const user_id = req.session.spotifyId;
 
         // update user's playlist info
         await updatePlaylist();
