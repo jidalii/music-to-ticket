@@ -60,7 +60,9 @@ passport.use(
             // console.log(user);
             // req.session.accessToken = accessToken; // Set tokens here
             // req.session.refreshToken = refreshToken;
-            req.session.userId = profile.id;
+            req.session.userId = profile.id
+            // req.session.userId = profile.id;
+            console.log('auth', req.session);
             if (!user) {
                 const newUser = await User.create({
                     // _id: new mongoose.Types.ObjectId(profile.id),
