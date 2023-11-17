@@ -1,3 +1,4 @@
+import '../tailwind.css'
 
 function Footer() {
     return (
