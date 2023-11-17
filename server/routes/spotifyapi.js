@@ -6,15 +6,21 @@ const mongoose = require("mongoose");
 const User = require('../model/user');
 const Spotify = require('../model/gallery');
 
-const getAccessToken = async (user_id) => {
+/**
+ * Retrieves access_token for a given user ID from the User model.
+ * @param {string} userId - The ID of the user whose playlist is to be retrieved.
+ * @returns {string} access_token of the user with id `userId`
+ */
+const getAccessToken = async (userId) => {
+    // console.log('acc', userId);
     const user = await User.findOne(
         {
-            spotifyId: "31lbzo6ubfwku5s5xxmlhaxxooz4"
-        },
+            spotifyId: userId
+        }
     )
-    // console.log(user);
+
     if (!user) {
-        return res.status(404).send('User not found');
+        console.log('user not found');
     }
 
     if (!user.accessToken) {
@@ -23,35 +29,39 @@ const getAccessToken = async (user_id) => {
     return user.accessToken.toString();
 }
 
-const updatePlaylist = async (user_id) => {
+/**
+ * Updates a playlist for a given user ID from the Spotify model.
+ * @param {string} userId - The ID of the user whose playlist is to be retrieved.
+ */
+const updatePlaylist = async (userId) => {
     try{
-        // api params
-        const ACCESS_TOKEN = await getAccessToken();
-        const id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        // 1. get userId & access_token
+        // const userId = req.query.userId
+        const accessToken = await getAccessToken(userId);
 
-        // api call
-        const response = await axios.get(`https://api.spotify.com/v1/users/${id}/playlists`, {
+        // 2. api call -> get playlists info
+        const response = await axios.get(`https://api.spotify.com/v1/users/${userId}/playlists`, {
             headers: {
-                'Authorization': `Bearer ${ACCESS_TOKEN}`
+                'Authorization': `Bearer ${accessToken}`
             }
         });
 
-        // clean returned values
+        // 3. parse playlist info
         const playlist_ls = [];
         response.data.items.forEach(item => {
-            playlist_ls.push(item.id);
+            playlist = {name: item.name, id: item.id}
+            playlist_ls.push(playlist);
         });
 
-
-        // store in mongodb
-        const user_id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        // 4. store in mongodb
         try{
             await Spotify.findOneAndUpdate(
-                { 'id': user_id }, // The filter to find the document
+                { 'id': userId }, // The filter to find the document
                 { $set: {playlist: playlist_ls} }, // The update operation
                 { upsert: true, new: true }
             );
-            console.log("update playlist");
+            // console.log(playlist_ls);
+            return playlist_ls;
         } catch(error){
             console.log('Error in upsert:', error);
         }
@@ -66,38 +76,26 @@ const updatePlaylist = async (user_id) => {
     }
 }
 
+
+/**
+ * Retrieves a playlist for a given user ID from the Spotify model.
+ * @param {string} userId - The ID of the user whose playlist is to be retrieved.
+ * @returns {Promise<json[]>} A promise that resolves to an array of playlist objects.
+ */
 const getPlaylist = async(user_id) => {
     const playlist_obj = await Spotify.findOne({id: user_id}, 'playlist');
-    // console.log(playlist_obj.playlist);
     return playlist_obj.playlist;
 }
 
+
+
 router.get('/v0/playlist', async(req, res) => {
     try{
-        const ACCESS_TOKEN = await getAccessToken();
-        const USER_ID = '31lbzo6ubfwku5s5xxmlhaxxooz4';
-        const response = await axios.get(`https://api.spotify.com/v1/users/${USER_ID}/playlists`, {
-            headers: {
-                'Authorization': `Bearer ${ACCESS_TOKEN}`
-            }
-        });
-        // console.log(response.data.item.id);
-        const playlist_ls = [];
-        response.data.items.forEach(item => {
-            playlist_ls.push(item.id);
-        });
-        const user_id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
-        // store in mongodb
-        try{
-            await Spotify.findOneAndUpdate(
-                { 'id': user_id }, // The filter to find the document
-                { $set: {playlist: playlist_ls} }, // The update operation
-                { upsert: true, new: true }
-            );
-            res.json(playlist_ls);
-        } catch(error){
-            console.log('Error in upsert:', error);
-        }
+        // get userId 
+        const userId = req.query.userId;
+        // get playlists
+        playlists = await updatePlaylist(userId);
+        res.json(playlists)
     } catch (error) {
         // If the token is invalid or expired, Spotify API will return a 401 - Unauthorized error
         if (error.response && error.response.status === 401) {
@@ -113,27 +111,27 @@ router.get('/v0/playlist', async(req, res) => {
 router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
-        const ACCESS_TOKEN = await getAccessToken();
-        const user_id = '31lbzo6ubfwku5s5xxmlhaxxooz4';
+        const userId = req.query.userId;
+        const ACCESS_TOKEN = await getAccessToken(userId);
 
         // update user's playlist info
-        await updatePlaylist();
-        // console.log("update playlist");
+        await updatePlaylist(userId);
 
         // get user's all playlist
-        const playlist_ls = await getPlaylist(user_id);
+        const playlist_ls = await getPlaylist(userId);
 
         // store artist object as list
         const artistId_ls = [];
         // api call to get all artists of all playlist
-        for(const playlist_id of playlist_ls) {
+        for(const playlist of playlist_ls) {
+            const playlist_id = playlist.id
             const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
                 headers: {
                     'Authorization': `Bearer ${ACCESS_TOKEN}`
                 }
             });
             response.data.items.forEach(item => {
-
+                console.log('item',item);
                 item.track.artists.forEach(artist => {
                     // console.log(artist);
                     // artist_list.push({ id: artist.id, name: artist.name, image: artist.images});
@@ -150,17 +148,9 @@ router.get('/v0/artist', async (req, res)=> {
                 'Authorization': `Bearer ${ACCESS_TOKEN}`
             }
         });
-        // const artistDetails = await Promise.all(
-        //     artistId_ls.map(id =>
-        //         axios.get(`https://api.spotify.com/v1/artists/${id}`,{
-        //             headers: {
-        //                 'Authorization': `Bearer ${ACCESS_TOKEN}`
-        //             }
-        //         })
-        //     )
-        // );
+
         const artistRows = artistDetails.data.artists;
-        console.log(artistRows[0]);
+        // console.log(artistRows[0]);
         const artistData = artistRows.map(response => ({
             id: response.id,
             name: response.name,
@@ -168,7 +158,7 @@ router.get('/v0/artist', async (req, res)=> {
         }));
 
         try{
-            const query = {'id': user_id}
+            const query = {'id': userId}
             const update = {'$addToSet': {artist: {$each: artistData}}};
             await Spotify.updateOne(
                 query, // The filter to find the document
