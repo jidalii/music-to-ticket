@@ -6,11 +6,11 @@ const createError = require('http-errors');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const cookieSession = require("cookie-session");
-const logger = require('morgan');
+const session = require('express-session');
+// const bodyParser = require('body-parser');
 const app = express()
 
 // db
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
 require('./db_connection');
 
@@ -26,23 +26,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 2. CORS
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173', // specify the frontend origin
+    credentials: true, // allow credentials (cookies, sessions)
+};
 
-// 3. Express Session setup
+app.use(cors(corsOptions));
+
+app.all('*', function(req, res, next) {
+    res.header("Access-Contol-Allow-Origin", 'http://localhost:5173');
+    res.header("Access-Contol-Allow-Origin", 'true');
+    next()
+})
+
+// 3. Express Session setup            
 app.use(session({
     secret: 'secret testing',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.DATABASE_URL,
-        ttl: 14 * 24 * 60 * 60, // = 14 days. Default
-        autoRemove: 'native',
-    }),
     cookie: {
         path: '/',
         httpOnly: true,
         maxAge: 14 * 24 * 60 * 60 * 1000, // cookie expiration in milliseconds
-        secure: true
+        // secure: true,
+        secure: false,
+        sameSite: null
     }
 }));
 
@@ -51,7 +59,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('session'));
 
-// 5.Routers
+// 5.Routers         
 app.use("/auth", authRoutes);
 app.use("/profile", profileRoutes);
 app.use("/spotify", spotifyRoutes);
