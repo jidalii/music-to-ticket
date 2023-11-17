@@ -1,8 +1,6 @@
 const express = require("express");
-const passport = require('passport');
 const axios = require('axios');
 const router = express.Router();
-const mongoose = require("mongoose");
 const User = require('../model/user');
 const Spotify = require('../model/gallery');
 
@@ -60,7 +58,7 @@ const updatePlaylist = async (userId) => {
                 { $set: {playlist: playlist_ls} }, // The update operation
                 { upsert: true, new: true }
             );
-            // console.log(playlist_ls);
+
             return playlist_ls;
         } catch(error){
             console.log('Error in upsert:', error);
@@ -88,13 +86,18 @@ const getPlaylist = async(user_id) => {
 }
 
 
-
+/**
+ * return playlist of user with id `userId`
+ */
 router.get('/v0/playlist', async(req, res) => {
     try{
-        // get userId 
-        const userId = req.query.userId;
-        // get playlists
+        // 1. get userId 
+        // const userId = req.query.userId;
+        console.log(req.session);
+        const userId = req.session.user.spotifyId
+        // 2. get playlists
         playlists = await updatePlaylist(userId);
+
         res.json(playlists)
     } catch (error) {
         // If the token is invalid or expired, Spotify API will return a 401 - Unauthorized error
@@ -108,10 +111,12 @@ router.get('/v0/playlist', async(req, res) => {
     }
 })
 
+
 router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
-        const userId = req.query.userId;
+        // const userId = req.query.userId;
+        const userId = req.session.user.spotifyId
         const ACCESS_TOKEN = await getAccessToken(userId);
 
         // update user's playlist info
@@ -133,8 +138,6 @@ router.get('/v0/artist', async (req, res)=> {
             response.data.items.forEach(item => {
                 console.log('item',item);
                 item.track.artists.forEach(artist => {
-                    // console.log(artist);
-                    // artist_list.push({ id: artist.id, name: artist.name, image: artist.images});
                     if (!artistId_ls.includes(artist.id)){
                         artistId_ls.push(artist.id);
                     }
@@ -160,12 +163,12 @@ router.get('/v0/artist', async (req, res)=> {
         try{
             const query = {'id': userId}
             const update = {'$addToSet': {artist: {$each: artistData}}};
-            await Spotify.updateOne(
+            const updateArtistData = await Spotify.updateOne(
                 query, // The filter to find the document
                 update, // The update operation
                 { upsert: true, new: true }
             );
-        res.json(artistData);
+            res.json(artistData);
         } catch(error) {
             console.log('Error in upsert:', error);
         }
