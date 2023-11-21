@@ -10,10 +10,6 @@ body{
   background-color: spotify-black;
   color-scheme: dark;
 }
-#main {
-  z-index: 1;
-  flex: 1;
-}
 #footer {
   position: fixed;
   text-align: center;
