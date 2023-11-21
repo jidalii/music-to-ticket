@@ -8,3 +8,12 @@ body,
   background-color: spotify-black;
   color-scheme: dark;
 }
+#main {
+  flex: 1;
+}
+#footer {
+  position: fixed;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+}
