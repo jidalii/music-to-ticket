@@ -3,7 +3,7 @@ import '../tailwind.css'
 
 function Login() {
   return (
-    <div className='flex h-screen justify-center items-center' >
+    <div id = "main" className='flex h-screen justify-center items-center' >
       <div className='text-center'>
         <h1 className="text-6xl text-spotify-green mb-4">
           Welcome to Music to Ticket
