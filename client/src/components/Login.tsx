@@ -8,7 +8,7 @@ function Login() {
         <h1 id="loginpage" className="text-6xl text-spotify-green mb-4">
           Welcome to Music to Ticket
         </h1>
-        <button 
+        <button id="loginbutton"
           className="bg-spotify-green text-white px-5 py-2.5 inline-block text-lg m-1 cursor-pointer rounded-full font-bold"
           onClick={() => window.location.href='http://localhost:8000/auth/spotify'}
         >
