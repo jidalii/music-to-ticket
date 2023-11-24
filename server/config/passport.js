@@ -45,12 +45,16 @@ passport.use(
         },
         async function(req, accessToken, refreshToken, profile, done) {
             // console.log("profile", profile.photos[1]);
+            const avatar = None;
+            if(profile.photos) {
+                avatar = profile.photos[1].value
+            }
             const user = await User.findOneAndUpdate(
                 {spotifyId: profile.id},
                 {
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
-                    avatar: profile.photos[1].value,
+                    avatar: avatar,
                     country: profile.country,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
