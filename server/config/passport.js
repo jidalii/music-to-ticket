@@ -73,7 +73,7 @@ passport.use(
                     spotifyId: profile.id,
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
-                    avatar: profile.photos.photos[1].value,
+                    //avatar: profile.photos.photos[1].value,
                     country: profile.country,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
