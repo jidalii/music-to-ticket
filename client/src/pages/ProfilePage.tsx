@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import "./profile.css";
 
 interface User {
     username: string,
@@ -28,19 +29,30 @@ function ProfilePage() {
 
     return (
         <div>
-            {user && (
-                <div>
-                    <h2 className='text-4xl'>
-                        Welcome to Music to Ticket, {user.username}
-                    </h2>
-                    <img src={user.avatar}/>
-                    {/* {AvatarShow(user.avatar)} */}
-                    <p className='text-2xl'>
-                        Email: {user.email}
-                    </p>
 
-                </div>
-            )}
+            {user && (
+                <main>
+                    <div class="profile-header">
+                        <div class="user-info">
+                            <h2 className='text-2xl'>
+                                User Name:
+                            </h2>
+                            <h3 className='text-8xl profile-name'>
+                                {user.username}
+                            </h3>
+                        </div >
+                        
+                        <div class="pic">
+                            <img src={user.avatar} alt="Profile Avatar"/>
+                            {/* {AvatarShow(user.avatar)} */}
+                        </div>
+                            <p className='text-2xl'>
+                                Email: {user.email}
+                            </p>
+                    </div>
+                </main>
+                )}
+        
         </div>
     );
 }

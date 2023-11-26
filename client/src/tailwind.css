@@ -42,3 +42,9 @@ body{
   z-index: 1;
 
 }
+#profilename{
+  top: 30vh;
+  left: 60vh;
+  font-weight: bold;
+  
+}
