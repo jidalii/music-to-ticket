@@ -17,8 +17,22 @@ header {
     margin-top: 70px;
 }
 
-#h2{
+#h11 {
     font-family: "Times New Roman", Times, serif;
+    font-size: 60px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+#h12 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#h2{
+    font-family: 'Arial', sans-serif;
     font-size: 24px;
 }
 
@@ -75,9 +89,23 @@ main {
 
 }
 
+.textsection{
+    display: block;
+}
+
 #section1 {
     margin-top: 40px;
     background-color: white; /* Yellow */
+}
+
+#unreal{
+    font-size: 22px;
+    margin-top: 60px;
+}
+
+#new{
+    margin-bottom: 60px;
+    color: black;
 }
 
 #section3 {
@@ -88,20 +116,41 @@ main {
     background-color: white; /* Light Green */
 }
 
+#rightimg{
+    float: right;
+}
+
 .section img {
     max-width: 100%;
     margin-right: 20px;
     object-fit: cover;
-     display: block;
+    display: block;
     /* Adjust styling as needed */
 }
 
-h2 {
+main h2 {
     color: #333;
+    font-size: 26px;
+    font-weight: 550;
     /* border-bottom: 2px solid #4285f4; */
     padding-bottom: 5px;
 }
 
+#login{
+    color: rgb(90, 151, 244);
+    font-weight: 550;
+
+}
+
+#blogin{
+    margin-top: 2px;
+}
+
 main p {
+    margin-top: 20px;
     color: #666;
+}
+
+#loginbutton{
+    margin-top: 40px;
 }
