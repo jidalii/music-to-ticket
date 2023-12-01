@@ -2,9 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 html,
-body,
+body{
+  z-index: 1;
+}
 :root {
   height: 100%;
   background-color: spotify-black;
   color-scheme: dark;
+}
+#footer {
+  position: fixed;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+  z-index: 2;
+}
+#nav {
+  position: fixed;
+  background-color: white;
+  z-index: 2;
+}
+#loginpage{
+  font-style:oblique;
+  font-weight: bolder;
+  color:#228B22;
+}
+#loginbutton{
+  font-weight: bold;
+  color:ivory;
+}
+#background_box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f0f0f0; /* Set the background color for the box */
+  height: 60vh; /* Set the height to 50% of the viewport height */
+  width: 120vh; /* Set the width to 120% of the viewport height */
+  z-index: 1;
+
+}
+#profilename{
+  top: 30vh;
+  left: 60vh;
+  font-weight: bold;
+  
 }

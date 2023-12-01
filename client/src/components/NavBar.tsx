@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 function NavBar() {
     return (
-        <nav className="fixed top-0 w-full z-50 bg-white shadow-md">
+        <nav id = "nav" className="fixed top-0 w-full z-50 bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
           
