@@ -35,22 +35,45 @@ function ProfilePage() {
                     <div class="profile-header">
                         <div class="user-info">
                             <h2 className='text-2xl'>
-                                User Name:
+                                User Name
                             </h2>
                             <h3 className='text-8xl profile-name'>
                                 {user.username}
                             </h3>
+                            <p className='text-2xl'>
+                                Email: {user.email}
+                            </p>
                         </div >
                         
                         <div class="pic">
                             <img src={user.avatar} alt="Profile Avatar"/>
                             {/* {AvatarShow(user.avatar)} */}
                         </div>
-                            <p className='text-2xl'>
-                                Email: {user.email}
-                            </p>
+                         
+                       
+                    </div>
+                    <div class="bottom-area">
+                        <div className="music-preferences">
+                            <h3>Favorite Genres</h3>
+                                {/*<ul>
+                                    {user.favoriteGenres.map((genre) => (
+                                        <li key={genre}>{genre}</li>
+                                    ))}
+                                    </ul>
+                                    {/* Add create/edit/delete playlist functionality */}
+                        </div>
+                        <div className="playlists">
+                            <h3>User's Playlists</h3>
+                            {/*<ul>
+                            {user.playlists.map((playlist) => (
+                                <li key={playlist.id}>{playlist.name}</li>
+                            ))}
+                            </ul>
+                            {/* Add create/edit/delete playlist functionality */} 
+                        </div>
                     </div>
                 </main>
+
                 )}
         
         </div>
