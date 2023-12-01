@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const User = require('../model/user');
 
+
+playlistSchema = new mongoose.Schema({
+    name: String,
+    id: String
+});
+
 const ImageSchema = new mongoose.Schema({
     url: String,
     width: Number,
@@ -35,7 +41,7 @@ const artistSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
     id: String,
-    playlist: [String],
+    playlist: [playlistSchema],
     artist: [artistSchema]
 });
 

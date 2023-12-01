@@ -12,13 +12,13 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     username: String,
+    avatar: String,
     country: String,
     accessToken: String,
     refreshToken: String,
     expires_in: Number,
     // avatarUrl: String,
-    provider: String,
-
+    provider: String
 });
 
 module.exports = mongoose.model('User', userSchema, 'user')
