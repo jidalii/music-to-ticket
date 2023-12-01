@@ -66,6 +66,8 @@ router.get('/events', async (req, res) => {
                 url: event.url
             })); //flatten into a single array
         console.log(events);
+
+
         // Access the Spotify ID
         const user_id = req.query.spotifyId;     //需要转换成dynamic。。。"31525gofi436ryheps2haspy5kq4"
         const user = await User.findOne({spotifyId: user_id});
