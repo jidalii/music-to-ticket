@@ -6,7 +6,6 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Spotify = require("../model/gallery");
 const User = require('../model/user');
-const Ticket = require('../model/ticket');
 
 const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
 const API_KEY = process.env.TICKETMASTER_CLIENT_ID
