@@ -47,7 +47,8 @@ passport.use(
             // console.log("profile", profile.photos[1]);
             const avatar = null;
             if(profile.photos) {
-                avatar = profile.photos[1].value
+                console.log(profile.photos[0].value);
+                avatar = profile.photos[0].value
             }
             const user = await User.findOneAndUpdate(
                 {spotifyId: profile.id},
