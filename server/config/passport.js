@@ -44,10 +44,9 @@ passport.use(
             passReqToCallback: true,
         },
         async function(req, accessToken, refreshToken, profile, done) {
-            // console.log("profile", profile.photos[1]);
             let avatar = null;
             if(profile.photos) {
-                console.log(profile.photos[0].value);
+                // console.log(profile.photos[0].value);
                 avatar = profile.photos[0].value
             }
             const user = await User.findOneAndUpdate(
@@ -63,11 +62,11 @@ passport.use(
                 }
             );
             // console.log(user);
-            // req.session.accessToken = accessToken; // Set tokens here
+            req.session.accessToken = accessToken; // Set tokens here
             // req.session.refreshToken = refreshToken;
             req.session.userId = profile.id
             // req.session.userId = profile.id;
-            console.log('auth', req.session);
+            // console.log('auth', req.session);
             if (!user) {
                 const newUser = await User.create({
                     // _id: new mongoose.Types.ObjectId(profile.id),
