@@ -34,19 +34,19 @@ function ProfilePage() {
 
         fetchUserData();
     }, []);
-    useEffect(() => {
-        const fetchArtistData = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist'); // Replace with the actual artist ID
-                setArtist(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching artist data:', error);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchArtistData = async () => {
+    //         try {
+    //             const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist'); // Replace with the actual artist ID
+    //             setArtist(response.data);
+    //             console.log(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching artist data:', error);
+    //         }
+    //     };
 
-        fetchArtistData();
-    }, []);
+    //     fetchArtistData();
+    // }, []);
 
     return (
         <div>
