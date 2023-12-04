@@ -10,7 +10,7 @@ const Spotify = require('../model/gallery');
  * @returns {string} access_token of the user with id `userId`
  */
 const getAccessToken = async (userId) => {
-    // console.log('acc', userId);
+    // console.log(userId); 
     const user = await User.findOne(
         {
             spotifyId: userId
@@ -20,7 +20,7 @@ const getAccessToken = async (userId) => {
     if (!user) {
         console.log('user not found');
     }
-
+    console.log(user);
     if (!user.accessToken) {
         return res.status(404).send('Access token not found');
     }
@@ -92,8 +92,7 @@ const getPlaylist = async(user_id) => {
 router.get('/v0/playlist', async(req, res) => {
     try{
         // 1. get userId 
-        // const userId = req.query.userId;
-        console.log(req.session);
+        // console.log("v0.playlist", req.session.user.spotifyId);
         const userId = req.session.user.spotifyId
         // 2. get playlists
         playlists = await updatePlaylist(userId);
@@ -115,7 +114,8 @@ router.get('/v0/playlist', async(req, res) => {
 router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
-        const userId = req.session.user.spotifyId
+        // console.log(req.session.user.spotifyId);
+        const userId = req.session.user.spotifyId;
         const ACCESS_TOKEN = await getAccessToken(userId);
         // console.log(ACCESS_TOKEN);
 
@@ -184,8 +184,8 @@ router.get('/v0/artist', async (req, res)=> {
 })
 
 router.get('/v0/top3-artist', async(req, res) => {
-    console.log(req.session);
-    const userId = req.session.user.spotifyId
+    // console.log("top3", req.session);
+    const userId = req.session.spotifyId
     const ACCESS_TOKEN = getAccessToken(userId);
 
     // update user's playlist info

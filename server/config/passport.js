@@ -60,8 +60,9 @@ passport.use(
                     provider: profile.provider,
                 }
             );
-            req.session.accessToken = accessToken; // Set tokens here
-            req.session.spotifyId = profile.id
+            req.session.user = {}
+            req.session.user.accessToken = accessToken; // Set tokens here
+            req.session.user.spotifyId = profile.id
             if (!user) {
                 const newUser = await User.create({
                     spotifyId: profile.id,
