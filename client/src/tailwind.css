@@ -8,7 +8,7 @@ body{
 
 :root {
   height: 100%;
-  background:radial-gradient(closest-corner at center,#228B22,white);
+  background:radial-gradient(closest-corner at center,rgb(175, 174, 174),white);
   color-scheme: dark;
 }
 #footer {
@@ -44,7 +44,7 @@ body{
   width: 110vh; /* Set the width to 110% of the viewport height */
   z-index: 1;
   backdrop-filter: blur(2px) brightness(95%);
-  box-shadow: 10px 10px 30px darkgreen;
+  box-shadow: 10px 10px 30px gray;
   border-radius: 5%;
 
 }

@@ -11,18 +11,14 @@ interface User {
 interface Artist {
     id: string,
     name: string,
-    image: string
-    song:Song[]
+    image: string,
+    song: string[],//3 songs
     type:string
 }
-//3 top favorite songs
-interface Song{
-    songname:string
-}
-
 
 function ProfilePage() {
     const [user, setUser] = useState<User | null>(null);
+    const [artist, setArtist] = useState<Artist | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -37,6 +33,19 @@ function ProfilePage() {
         };
 
         fetchUserData();
+    }, []);
+    useEffect(() => {
+        const fetchArtistData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist'); // Replace with the actual artist ID
+                setArtist(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching artist data:', error);
+            }
+        };
+
+        fetchArtistData();
     }, []);
 
     return (
