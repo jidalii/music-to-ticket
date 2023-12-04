@@ -45,7 +45,7 @@ passport.use(
         },
         async function(req, accessToken, refreshToken, profile, done) {
             // console.log("profile", profile.photos[1]);
-            const avatar = null;
+            let avatar = null;
             if(profile.photos) {
                 console.log(profile.photos[0].value);
                 avatar = profile.photos[0].value

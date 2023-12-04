@@ -3,8 +3,9 @@ import '../tailwind.css'
 
 function Login() {
   return (
+    
     <div id="background_box"className="background-box flex h-screen justify-center items-center">
-    <div className='flex h-screen justify-center items-center' >
+    <div className='flex h-screen justify-center items-center'>
       
       <div className='text-center'>
         <h1 id="loginpage" className="text-6xl text-spotify-green mb-4">
