@@ -8,6 +8,7 @@ import GalleryPage from './pages/GalleryPage'
 
 function App() {
   return (
+   
     <Router>
       <NavBar />
       {/* Add padding to the top of your main content */}

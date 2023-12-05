@@ -7,10 +7,18 @@ interface User {
     email: string,
     avatar: string
 }
-
+//5 top artists
+interface Artist {
+    id: string,
+    name: string,
+    image: string,
+    song: string[],//3 songs
+    type:string
+}
 
 function ProfilePage() {
     const [user, setUser] = useState<User | null>(null);
+    const [artist, setArtist] = useState<Artist | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -26,33 +34,46 @@ function ProfilePage() {
 
         fetchUserData();
     }, []);
+    // useEffect(() => {
+    //     const fetchArtistData = async () => {
+    //         try {
+    //             const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist'); // Replace with the actual artist ID
+    //             setArtist(response.data);
+    //             console.log(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching artist data:', error);
+    //         }
+    //     };
+
+    //     fetchArtistData();
+    // }, []);
 
     return (
         <div>
 
             {user && (
-                <main>
-                    <div class="profile-header">
-                        <div class="user-info">
-                            <h2 className='text-2xl'>
-                                User Name
-                            </h2>
-                            <h3 className='text-8xl profile-name'>
-                                {user.username}
-                            </h3>
-                            <p className='text-2xl'>
-                                Email: {user.email}
-                            </p>
-                        </div >
-                        
-                        <div class="pic">
-                            <img src={user.avatar} alt="Profile Avatar"/>
-                            {/* {AvatarShow(user.avatar)} */}
+                <body>
+                    <header>
+                        <div class="profile-header">
+                            <div class="user-info">
+                                <h2 className='text-2xl'>
+                                    Hi! This is
+                                </h2>
+                                <h3 className='text-8xl profile-name'>
+                                    {user.username}
+                                </h3>
+                                {/*<p className='text-2xl'>
+                                    Email: {user.email} 
+                                    \</p>*/}
+                            </div >
+                            
+                            <div class="pic">
+                                <img src={user.avatar} alt="No Profile Image"/>
+                                {/* {AvatarShow(user.avatar)} */}
+                            </div>
                         </div>
-                         
-                       
-                    </div>
-                    <div class="bottom-area">
+                    </header>
+                    
                         <div className="music-preferences">
                             <h3>Favorite Genres</h3>
                                 {/*<ul>
@@ -62,7 +83,7 @@ function ProfilePage() {
                                     </ul>
                                     {/* Add create/edit/delete playlist functionality */}
                         </div>
-                        <div className="playlists">
+                        <div class="playlists">
                             <h3>User's Playlists</h3>
                             {/*<ul>
                             {user.playlists.map((playlist) => (
@@ -71,8 +92,8 @@ function ProfilePage() {
                             </ul>
                             {/* Add create/edit/delete playlist functionality */} 
                         </div>
-                    </div>
-                </main>
+    
+                </body>
 
                 )}
         

@@ -23,7 +23,7 @@ function fetchArtistList() {
                 const response = await axios.get('http://localhost:8000/spotify/v0/artist', { withCredentials: true });
                 setArtistList(response.data);
                 // USER_ID = response.data
-                console.log(response.data);
+                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching artist data:', error);
             }
@@ -32,7 +32,7 @@ function fetchArtistList() {
         fetchArtistData();
     }, []);
     if (artistList !== null){
-      console.log(artistList);
+      // console.log(artistList);
       return (
         <div className = "flex justify-center w-full">
           <ul role="list" className="divide-y divide-gray-100 flex flex-col items-center">

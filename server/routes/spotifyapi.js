@@ -10,7 +10,7 @@ const Spotify = require('../model/gallery');
  * @returns {string} access_token of the user with id `userId`
  */
 const getAccessToken = async (userId) => {
-    // console.log('acc', userId);
+    // console.log(userId); 
     const user = await User.findOne(
         {
             spotifyId: userId
@@ -20,7 +20,7 @@ const getAccessToken = async (userId) => {
     if (!user) {
         console.log('user not found');
     }
-
+    console.log(user);
     if (!user.accessToken) {
         return res.status(404).send('Access token not found');
     }
@@ -92,8 +92,7 @@ const getPlaylist = async(user_id) => {
 router.get('/v0/playlist', async(req, res) => {
     try{
         // 1. get userId 
-        // const userId = req.query.userId;
-        console.log(req.session);
+        // console.log("v0.playlist", req.session.user.spotifyId);
         const userId = req.session.user.spotifyId
         // 2. get playlists
         playlists = await updatePlaylist(userId);
@@ -115,9 +114,10 @@ router.get('/v0/playlist', async(req, res) => {
 router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
-        // const userId = req.query.userId;
-        const userId = req.session.user.spotifyId
+        // console.log(req.session.user.spotifyId);
+        const userId = req.session.user.spotifyId;
         const ACCESS_TOKEN = await getAccessToken(userId);
+        // console.log(ACCESS_TOKEN);
 
         // update user's playlist info
         await updatePlaylist(userId);
@@ -136,7 +136,6 @@ router.get('/v0/artist', async (req, res)=> {
                 }
             });
             response.data.items.forEach(item => {
-                console.log('item',item);
                 item.track.artists.forEach(artist => {
                     if (!artistId_ls.includes(artist.id)){
                         artistId_ls.push(artist.id);
@@ -144,7 +143,6 @@ router.get('/v0/artist', async (req, res)=> {
                 });
             });
         }
-        // console.log(artistId_ls);
         const combinedString = artistId_ls.join(',');
         const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
             headers: {
@@ -183,6 +181,75 @@ router.get('/v0/artist', async (req, res)=> {
         }
     }
 
+})
+
+router.get('/v0/top3-artist', async(req, res) => {
+    // console.log("top3", req.session);
+    const userId = req.session.spotifyId
+    const ACCESS_TOKEN = getAccessToken(userId);
+
+    // update user's playlist info
+    await updatePlaylist(userId);
+
+    // get user's all playlist
+    const playlist_ls = await getPlaylist(userId);
+
+    // store artist object as list
+    let artistId_ls = {};
+    let songList = {}
+
+    for(const playlist of playlist_ls) {
+        const playlist_id = playlist.id
+        const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+            headers: {
+                'Authorization': `Bearer ${ACCESS_TOKEN}`
+            }
+        });
+        response.data.items.forEach(item => {
+            item.track.artists.forEach(artist => {
+                if(artist.id in artistId_ls) {
+                    artistId_ls[artist.id] += 1;
+                } else {
+                    artistId_ls[artist.id] = 1;
+                }
+                
+            });
+        });
+        response.data.items.forEach(item => {
+            if (item.track.artists[0].id in songList) {
+                songList[item.track.artists[0].id].push(item.track.name);
+            } else {
+                songList[item.track.artists[0].id] = []
+                songList[item.track.artists[0].id].push(item.track.name);
+            }
+        });
+    }
+    let artistIdSorted = Object.entries(artistId_ls).sort((a, b) => {
+        return b[1] - a[1]; // Compare the values
+    });
+    let topArtists = []
+    if (artistIdSorted.length >=3) {
+        for(let i=0; i<3; i++) {
+            topArtists.push(artistIdSorted.at(i).at(0))
+        }
+    }
+    const combinedString = topArtists.join(',');
+    const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
+        headers: {
+            'Authorization': `Bearer ${ACCESS_TOKEN}`
+        }
+    });
+
+    const artistRows = artistDetails.data.artists;
+    const artistData = artistRows.map(response => ({
+        id: response.id,
+        name: response.name,
+        type: response.genres.at(0),
+        song: songList[response.id].length>=3 ? songList[response.id].slice(0, 3) : [],
+        image: response.images.at(0).url // Taking the last image as an example
+    }));
+
+    res.json(artistData);
 })
 
 module.exports = router;

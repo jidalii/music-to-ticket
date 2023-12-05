@@ -5,9 +5,27 @@ const axios = require('axios');
 const router = express.Router();
 const mongoose = require("mongoose");
 const Spotify = require("../model/gallery");
+const User = require('../model/user');
 
 const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
 const API_KEY = process.env.TICKETMASTER_CLIENT_ID
+
+
+// Function to get artist names from MongoDB
+async function getArtistNamesFromDB(user_id) {
+    try {
+
+        const userGallery = await Spotify.findOne({ id: user_id });
+        if (!userGallery || !userGallery.artist) {
+            return [];  // Return an empty array if the user has no artists
+        }
+        return userGallery.artist.map(artist => artist.name);
+    } catch (error) {
+        console.error('Error fetching artist names from MongoDB:', error);
+        throw error;
+    }
+}
+
 
 router.get('/event/:artist', async (req, res) => {
 
@@ -31,5 +49,97 @@ router.get('/event/:artist', async (req, res) => {
     }
 
 })
+
+
+
+// New route to get events for all artists in MongoDB
+router.get('/events', async (req, res) => {
+    try {
+        const user_id = req.session.userId;
+        const artistNames = await getArtistNamesFromDB(user_id);
+
+        //console.log(artistNames);
+
+        let allArtistsEvents = [];
+
+        const eventsPromises = artistNames.map(name => axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`)
+        );
+
+        for (const [index, name] of artistNames.entries()){
+            try{
+                const response = await axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`);
+
+                let events = response.data._embedded?.events ?? [];
+
+                // Map the events
+                let artistEvents = events.map(event => ({
+                    name: event.name,
+                    date: event.dates.start.localDate,
+                    time: event.dates.start.localTime,
+                    url: event.url,
+                    images: event.images.map(image => ({
+                        url: image.url
+                    }))
+                }));
+
+                // Add this artist and their events to the allArtistsEvents array
+                allArtistsEvents.push({
+                    artistName: name,
+                    events: artistEvents,
+                });
+
+            } catch (error) {
+                console.error(`Error fetching events for artist ${name}:`, error.response ? error.response.data : error.message);
+                allArtistsEvents.push({
+                    artistName: name,
+                    events: [],
+                });
+            }
+
+            //A delay to avoid hitting the rate limit
+            await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
+        }
+
+        // At this point, allArtistsEvents is an array of objects, each containing an artist name and an array of their events
+        //console.log('All Artists Events:', allArtistsEvents);
+
+        //Update and create ticket array and artist array
+        const user = await User.findOne({spotifyId: user_id});
+
+
+        // Fetch the user's gallery from the database
+        let gallery = await Spotify.findOne({ id: user_id });
+
+        let allEvents_artist = allArtistsEvents;
+
+        allEvents_artist.forEach(artistEvents => {
+            let artistIndex = gallery.artist.findIndex(a => a.name === artistEvents.artistName);
+
+            if (artistIndex === -1) {
+                // Artist does not exist, add a new artist entry
+                gallery.artist.push({
+                    name: artistEvents.artistName,
+                    ticket: artistEvents.events,
+                    image: artistEvents.images
+                });
+            } else {
+                // Artist exists, update their events
+                gallery.artist[artistIndex].ticket = artistEvents.events;
+            }
+        });
+
+        // Save the updated gallery
+        await gallery.save();
+
+        res.render('events', { events: allArtistsEvents });
+
+    } catch (error) {
+        console.error('Error fetching events for artists:', error);
+        res.status(500).send('An error occurred while fetching events');
+    }
+});
+
+//:) nothing
+router.get('/events/fun', (req, res) => {res.status(418).send("I'm a teapot"); });
 
 module.exports = router;
