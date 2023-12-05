@@ -38,19 +38,18 @@ function ProfilePage() {
 
         fetchUserData();
     }, []);
-    /*useEffect(() => {
+    useEffect(() => {
         const fetchArtistData = async () => {
             try {
-                const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
-                setArtist(response_artist.data);
-                console.log(response_artist.data);
+                const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); // Replace with the actual artist ID
+                setArtist(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching artist data:', error);
             }
         };
-
         fetchArtistData();
-    }, []);*/
+    }, []);
 
     return (
         <div>
