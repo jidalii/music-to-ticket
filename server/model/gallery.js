@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 playlistSchema = new mongoose.Schema({
     name: String,
     id: String
-});
+}, { _id: false });
 
 const ImageSchema = new mongoose.Schema({
     url: String,
@@ -17,8 +17,8 @@ const ticketSchema = new mongoose.Schema({
     date: String,
     time: String,
     url: String,
-    images: Object // each object has an attribute "url", which is a String
-});
+    images_url: String // each object has an attribute "url", which is a String
+}, { _id: false });
 
 const artistSchema = new mongoose.Schema({
     id: String,

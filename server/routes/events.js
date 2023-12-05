@@ -8,7 +8,7 @@ const Spotify = require("../model/gallery");
 const User = require('../model/user');
 
 const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
-const API_KEY = process.env.TICKETMASTER_CLIENT_ID
+const API_KEY = "Auyt9L2ZCIOM9mkmsIgjAp4zLjW1bBc8";//process.env.TICKETMASTER_CLIENT_ID
 
 
 
@@ -57,7 +57,7 @@ router.get('/event/:artist', async (req, res) => {
 // New route to get events for all artists in MongoDB
 router.get('/events', async (req, res) => {
     try {
-        const user_id = req.session.userId;
+        const user_id = "31525gofi436ryheps2haspy5kq4";//req.session.userId;
         const artistNames = await getArtistNamesFromDB(user_id);
         
         //console.log(artistNames);
@@ -79,9 +79,7 @@ router.get('/events', async (req, res) => {
                     date: event.dates.start.localDate,
                     time: event.dates.start.localTime,
                     url: event.url,
-                    images: event.images.map(image => ({
-                        url: image.url
-                    }))
+                    images_url: event.images[0].url
                 }));
 
                 // Add this artist and their events to the allArtistsEvents array
@@ -101,10 +99,17 @@ router.get('/events', async (req, res) => {
             //A delay to avoid hitting the rate limit
             await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
         }
-
-        // At this point, allArtistsEvents is an array of objects, each containing an artist name and an array of their events
-        //console.log('All Artists Events:', allArtistsEvents);
         
+        
+        allArtistsEvents.forEach(artist => {
+            artist.events = artist.events.filter(event => {
+                // Check if the event has a 'url' attribute and it's a non-empty string
+                return event.url && typeof event.url === 'string' && event.url.trim() !== '';
+            });
+        });
+        //console.log('All Artists Events:', allArtistsEvents);
+
+
         //Update and create ticket array and artist array
         const user = await User.findOne({spotifyId: user_id});
 
