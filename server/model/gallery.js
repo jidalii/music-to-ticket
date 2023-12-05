@@ -14,22 +14,11 @@ const ImageSchema = new mongoose.Schema({
 }, { _id: false });
 
 const ticketSchema = new mongoose.Schema({
-    userId: {
-        type: String,
-        ref: 'User',
-        required: true
-    },
-    name: {
-        type: String,
-        ref: 'User',
-    },
-
-    events: [{
-        name: String,
-        date: String,
-        time: Object,
-        url: String
-    }]
+    name: String,
+    date: String,
+    time: String,
+    url: String,
+    images: Object
 });
 
 const artistSchema = new mongoose.Schema({
