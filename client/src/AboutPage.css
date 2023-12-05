@@ -72,7 +72,7 @@ header {
     display: inline-block;
 }
 
-main {
+#main {
     max-width: 1200px;
     margin: 10px auto;
     padding: 20px;
@@ -86,7 +86,7 @@ main {
     padding: 20px; /* Add padding to separate content from the border */
     display: flex;
     align-items: center;
-
+    text-align: center;
 }
 
 .textsection{
@@ -94,6 +94,7 @@ main {
 }
 
 #section1 {
+    align-items: center;
     margin-top: 40px;
     background-color: white; /* Yellow */
 }
@@ -101,6 +102,8 @@ main {
 #unreal{
     font-size: 22px;
     margin-top: 60px;
+    align-items: center;
+
 }
 
 #new{
@@ -109,11 +112,14 @@ main {
 }
 
 #section3 {
-    background-color: white; /* Sky Blue */
+    text-align: left;
+    background-color: white; 
+    margin-right: 0%;
 }
 
 #section4 {
-    background-color: white; /* Light Green */
+    align-items:end;
+    background-color: white;
 }
 
 #rightimg{
