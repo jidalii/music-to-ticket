@@ -25,7 +25,6 @@ function ProfilePage() {
             try {
                 const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
                 setUser(response.data);
-                // USER_ID = response.data
                 console.log(response.data);
 
                 //const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
