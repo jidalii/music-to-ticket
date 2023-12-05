@@ -11,9 +11,9 @@
 <body>
 <h1>Profile Page</h1>
 <% if (user) { %>
-<!--    <img src="<%= imageUrl %>" alt="Image from Spotify">-->
     <h3>Username : <%= user.username %>
     </h3>
+    <img src="<%= user.avatar %>" alt="avatar">
     <h3>Email : <%= user.email %>
     </h3>
     <a href="/">Homepage</a>

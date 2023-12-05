@@ -26,7 +26,7 @@ database.once('connected', () => {
 // ********** google oauth **********
 
 passport.serializeUser((user, done) => {
-    console.log(user);
+    // console.log(user);
     done(null, user.id);
 });
 
@@ -44,30 +44,40 @@ passport.use(
             passReqToCallback: true,
         },
         async function(req, accessToken, refreshToken, profile, done) {
+            // console.log("profile", profile.photos[1]);
+            let avatar = null;
+            if(profile.photos) {
+                avatar = profile.photos[0].value
+            }
             const user = await User.findOneAndUpdate(
                 {spotifyId: profile.id},
                 {
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
+                    avatar: avatar,
                     country: profile.country,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
-                    provider: profile.provider
+                    provider: profile.provider,
                 }
             );
-            req.session.accessToken = accessToken; // Set tokens here
-            req.session.refreshToken = refreshToken;
-            // done(null, user);
+            // console.log(user);
+            // req.session.accessToken = accessToken; // Set tokens here
+            // req.session.refreshToken = refreshToken;
+            req.session.userId = profile.id
+            // req.session.userId = profile.id;
+            console.log('auth', req.session);
             if (!user) {
                 const newUser = await User.create({
                     // _id: new mongoose.Types.ObjectId(profile.id),
                     spotifyId: profile.id,
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
+                    avatar: profile.photos.photos[0].value,
                     country: profile.country,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
-                    provider: profile.provider
+                    provider: profile.provider,
                 });
                 if (newUser) {
                     done(null, newUser);

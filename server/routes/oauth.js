@@ -37,7 +37,7 @@ router.get("/spotify/redirect", passport.authenticate('spotify', { failureRedire
         // console.log(req.user);
         // res.render("profile", { user: req.user});
         req.session.user = req.user
-        res.redirect("http://localhost:5173/profile");
+        res.redirect("http://localhost:5173/profile"); 
     }
 );
 

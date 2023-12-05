@@ -6,26 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concert Events</title>
+    <style>
+        .artist {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .event {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Upcoming Concert Events</h1>
-    <div>
-        <% if (events.length === 0) { %>
-            <p>No upcoming events found.</p>
-        <% } else { %>
-            <% events.forEach(event => { %>
-                <div class="event">
-                    <h2><%= event.name %></h2>
-                    <p>Date: <%= event.date %></p>
-                    <p>Time: <%= event.time %></p>
-                    <a href="<%= event.url %>" target="_blank">More Info</a>
-                </div>
-            <% }) %>
-        <% } %>
-    </div>
-
-
+    <% if (allArtistsEvents.length === 0) { %>
+        <p>No upcoming events found.</p>
+    <% } else { %>
+        <% allArtistsEvents.forEach(artist => { %>
+            <div class="artist">
+                <h2>Events for <%= artist.artistName %>:</h2>
+                <% if (artist.events.length === 0) { %>
+                    <p>No events found for <%= artist.artistName %>.</p>
+                <% } else { %>
+                    <% artist.events.forEach(event => { %>
+                        <div class="event">
+                            <h3><%= event.name %></h3>
+                            <p>Date: <%= event.date %></p>
+                            <p>Time: <%= event.time %></p>
+                            <a href="<%= event.url %>" target="_blank">More Info</a>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        <% }) %>
+    <% } %>
 </body>
 
 </html>

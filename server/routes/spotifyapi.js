@@ -100,7 +100,7 @@ router.get('/v0/playlist', async(req, res) => {
     try{
         // 1. get userId 
         // const userId = req.query.userId;
-        console.log(req.session);
+        // console.log(req.session);
         const userId = req.session.user.spotifyId
         // 2. get playlists
         playlists = await updatePlaylist(userId);
@@ -152,7 +152,7 @@ router.get('/v0/artist', async (req, res)=> {
                 });
             });
         }
-        // console.log(artistId_ls);
+        console.log(artistId_ls);
         const combinedString = artistId_ls.join(',');
         const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
             headers: {
@@ -161,7 +161,7 @@ router.get('/v0/artist', async (req, res)=> {
         });
 
         const artistRows = artistDetails.data.artists;
-        // console.log(artistRows[0]);
+        console.log(artistRows[0]);
         const artistData = artistRows.map(response => ({
             id: response.id,
             name: response.name,
