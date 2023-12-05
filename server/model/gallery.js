@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const User = require('../model/user');
 
 
 playlistSchema = new mongoose.Schema({
@@ -18,7 +17,7 @@ const ticketSchema = new mongoose.Schema({
     date: String,
     time: String,
     url: String,
-    images: Object
+    images: Object // each object has an attribute "url", which is a String
 });
 
 const artistSchema = new mongoose.Schema({
