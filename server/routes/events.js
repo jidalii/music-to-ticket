@@ -8,7 +8,7 @@ const Spotify = require("../model/gallery");
 const User = require('../model/user');
 
 const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
-const API_KEY = "Auyt9L2ZCIOM9mkmsIgjAp4zLjW1bBc8";//process.env.TICKETMASTER_CLIENT_ID
+const API_KEY = process.env.TICKETMASTER_CLIENT_ID
 
 
 
@@ -57,7 +57,7 @@ router.get('/event/:artist', async (req, res) => {
 // New route to get events for all artists in MongoDB
 router.get('/events', async (req, res) => {
     try {
-        const user_id = "31525gofi436ryheps2haspy5kq4";//req.session.userId;
+        const user_id = req.session.userId;
         const artistNames = await getArtistNamesFromDB(user_id);
         
         //console.log(artistNames);
