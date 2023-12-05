@@ -18,7 +18,7 @@ interface Artist {
 
 function ProfilePage() {
     const [user, setUser] = useState<User | null>(null);
-    const [artist, setArtist] = useState<Artist | null>(null);
+    const [artist, setArtist] = useState<Artist[] | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -27,6 +27,10 @@ function ProfilePage() {
                 setUser(response.data);
                 // USER_ID = response.data
                 console.log(response.data);
+
+                //const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
+                //setArtist(response_artist.data);
+                //console.log(response_artist.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -34,19 +38,19 @@ function ProfilePage() {
 
         fetchUserData();
     }, []);
-    // useEffect(() => {
-    //     const fetchArtistData = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist'); // Replace with the actual artist ID
-    //             setArtist(response.data);
-    //             console.log(response.data);
-    //         } catch (error) {
-    //             console.error('Error fetching artist data:', error);
-    //         }
-    //     };
+    /*useEffect(() => {
+        const fetchArtistData = async () => {
+            try {
+                const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
+                setArtist(response_artist.data);
+                console.log(response_artist.data);
+            } catch (error) {
+                console.error('Error fetching artist data:', error);
+            }
+        };
 
-    //     fetchArtistData();
-    // }, []);
+        fetchArtistData();
+    }, []);*/
 
     return (
         <div>
@@ -100,5 +104,6 @@ function ProfilePage() {
         </div>
     );
 }
+
 
 export default ProfilePage;

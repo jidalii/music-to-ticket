@@ -8,7 +8,8 @@ body{
 
 :root {
   height: 100%;
-  background:radial-gradient(closest-corner at center,rgb(175, 174, 174),white);
+  /*background:radial-gradient(closest-corner at center,rgb(175, 174, 174),white);*/
+  background:linear-gradient(in oklab, rgb(100, 174, 100),white);
   color-scheme: dark;
 }
 #footer {
