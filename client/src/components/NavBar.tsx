@@ -1,4 +1,5 @@
 // import React from 'react';
+import '../NavBar.css'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -44,19 +45,31 @@ function NavBar() {
               <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/about">About</Link>
             </div>
             {user ? (
+            <div class="dropdown">
             <Avatar>
               <AvatarImage  />
               <AvatarFallback>
                 <img src={user.avatar} alt="CN"/>
               </AvatarFallback>
-            </Avatar>
+              </Avatar>
+              <div class="dropdown-content">
+                    <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/profile">My Profile</Link>
+                    <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/about">About us</Link>
+                    <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/gallery">My Gallery</Link>
+              </div>
+            </div>
             ):(
+              <div class="dropdown">
               <Avatar>
               <AvatarImage  />
               <AvatarFallback>
                CN
               </AvatarFallback>
               </Avatar>
+              <div class="dropdown-content">
+                <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/">Log in</Link>
+              </div>
+            </div>
             )}
           </div>
         </div>
