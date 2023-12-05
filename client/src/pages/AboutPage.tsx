@@ -28,6 +28,7 @@ function AboutPage() {
             <p>Create A Easier Way to</p>
             <p>Link you and the One you Love</p>
         </h1>
+
         <main id = "main">
             <section id="section1" class="section">
                 <img src={ticket} width="600" height="400" alt = "Somepic" />
@@ -37,10 +38,10 @@ function AboutPage() {
                 </section>
             </section>
 
-        <h1 id = "h12">
-            <p id ="unreal">Sounds unrealiable?</p>
-            <p id = "new">Even NO need to create new account</p>
-        </h1>
+            <h1 id = "h12">
+                <p id ="unreal">Sounds unrealiable?</p>
+                <p id = "new">Even NO need to create new account</p>
+            </h1>
 
             <section id= "section3" class="section">
                 <section class="textsection">
