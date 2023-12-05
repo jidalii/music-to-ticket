@@ -25,7 +25,6 @@ function ProfilePage() {
             try {
                 const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
                 setUser(response.data);
-                // USER_ID = response.data
                 console.log(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -34,19 +33,18 @@ function ProfilePage() {
 
         fetchUserData();
     }, []);
-    // useEffect(() => {
-    //     const fetchArtistData = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist'); // Replace with the actual artist ID
-    //             setArtist(response.data);
-    //             console.log(response.data);
-    //         } catch (error) {
-    //             console.error('Error fetching artist data:', error);
-    //         }
-    //     };
-
-    //     fetchArtistData();
-    // }, []);
+    useEffect(() => {
+        const fetchArtistData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); // Replace with the actual artist ID
+                setArtist(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching artist data:', error);
+            }
+        };
+        fetchArtistData();
+    }, []);
 
     return (
         <div>
