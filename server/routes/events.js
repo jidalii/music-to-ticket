@@ -77,9 +77,7 @@ router.get('/events', async (req, res) => {
                     date: event.dates.start.localDate,
                     time: event.dates.start.localTime,
                     url: event.url,
-                    images: event.images.map(image => ({
-                        url: image.url
-                    }))
+                    images_url: event.images[0].url
                 }));
 
                 // Add this artist and their events to the allArtistsEvents array
@@ -100,7 +98,12 @@ router.get('/events', async (req, res) => {
             await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
         }
 
-        // At this point, allArtistsEvents is an array of objects, each containing an artist name and an array of their events
+        allArtistsEvents.forEach(artist => {
+            artist.events = artist.events.filter(event => {
+                // Check if the event has a 'url' attribute and it's a non-empty string
+                return event.url && typeof event.url === 'string' && event.url.trim() !== '';
+            });
+        });
         //console.log('All Artists Events:', allArtistsEvents);
 
         //Update and create ticket array and artist array
