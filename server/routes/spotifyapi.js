@@ -183,10 +183,14 @@ router.get('/v0/artist', async (req, res)=> {
 
 })
 router.get('/v0/top3-artist', async(req, res) => {
-    // console.log("top3", req.session);
-    const userId = req.session.user.spotifyId;
+    let userId;
+    try{
+        console.log("top3", req.session.user);
+        userId = req.session.user.spotifyId;
+    } catch(error){
+        console.log("top3", req.session.user);
+    }
     const ACCESS_TOKEN = await getAccessToken(userId);
-
     // update user's playlist info
     await updatePlaylist(userId);
 
