@@ -9,10 +9,18 @@ interface Image {
   width: Number
   height: Number
 }
+interface Event {
+  name: string,
+  date: string,
+  time: string,
+  url: string,
+  images_url: string
+}
 interface Artist {
     id: string,
     name: string,
-    image: Image[]
+    image: Image[],
+    tickect: Event[]
 }
 
 function fetchArtistList() {
@@ -21,10 +29,10 @@ function fetchArtistList() {
     useEffect(() => {
         const fetchArtistData = async () => {
             try {
+                // const response = await axios.get('http://localhost:8000/ticket/events', { withCredentials: true });
                 const response = await axios.get('http://localhost:8000/spotify/v0/artist', { withCredentials: true });
+                console.log("gallery", response.data)
                 setArtistList(response.data);
-                // USER_ID = response.data
-                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching artist data:', error);
             }
@@ -32,8 +40,8 @@ function fetchArtistList() {
 
         fetchArtistData();
     }, []);
+    
     if (artistList !== null){
-      // console.log(artistList);
       return (
         <div  id="gallery-page" className = "flex justify-center w-full">
           <ul id= "artistlist" role="list" className="artistlist">
