@@ -39,6 +39,7 @@ body {
     height: 40vh;
     overflow: hidden; /* Ensures the border-radius works as expected */
     border-radius: 50%;
+    box-shadow: 10px 10px 30px rgb(80, 109, 145);
 
     
   }
@@ -50,6 +51,7 @@ body {
   .profile-header h2,
   .profile-header h3{
     text-indent: 25vh;
+
   }
 
   .profile-header h2 {
@@ -92,9 +94,11 @@ body {
   }
   
   /* Style the music preferences section */
-  .music-preferences {
+  .music-preferences,
+  .playlists
+   {
     margin-top: 0;
-    background-color:whitesmoke;
+    background-color:gainsboro;
   
   }
 
@@ -114,7 +118,6 @@ body {
   /* Style the playlist section */
   .playlists {
     margin-top:0;
-    background-color:whitesmoke;
     height:35vh;
   }
   
