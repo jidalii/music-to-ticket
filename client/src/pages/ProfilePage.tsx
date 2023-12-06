@@ -45,8 +45,8 @@ function ProfilePage() {
             {user && (
                 <body>
                     <header>
-                        <div class="profile-header">
-                            <div class="user-info">
+                        <div className="profile-header">
+                            <div className="user-info">
                                 <h2 className='text-2xl'>
                                     Hi! This is
                                 </h2>
@@ -58,7 +58,7 @@ function ProfilePage() {
                                     \</p>*/}
                             </div >
                             
-                            <div class="pic">
+                            <div className="pic">
                                 <img src={user.avatar} alt="No Profile Image"/>
                                 {/* {AvatarShow(user.avatar)} */}
                             </div>
@@ -74,7 +74,7 @@ function ProfilePage() {
                                     </ul>
                                     {/* Add create/edit/delete playlist functionality */}
                         </div>
-                        <div class="playlists">
+                        <div className="playlists">
                             <h3>User's Playlists</h3>
                             {/*<ul>
                             {user.playlists.map((playlist) => (
@@ -83,6 +83,22 @@ function ProfilePage() {
                             </ul>
                             {/* Add create/edit/delete playlist functionality */} 
                         </div>
+
+                        {/*artist && (
+                            <div>
+                            <h3>Top Artists</h3>
+                            <ul>
+                                {artist.map((artist) => (
+                                <li key={artist.id}>
+                                    <p>Name: {artist.name}</p>
+                                    <p>Type: {artist.type}</p>
+                                    <p>Songs: {artist.song.join(', ')}</p>
+                                    <img src={artist.image} alt={artist.name} />
+                                </li>
+                                ))}
+                            </ul>
+                            </div>
+                        )*/}
     
                 </body>
 
@@ -91,5 +107,6 @@ function ProfilePage() {
         </div>
     );
 }
+
 
 export default ProfilePage;

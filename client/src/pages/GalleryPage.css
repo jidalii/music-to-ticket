@@ -1,0 +1,38 @@
+#gallery-page{
+    background-color: white;
+    height: 100vh;
+}
+#artist-img{
+    flex-shrink: 0;
+    width: 200px; /* 100px */
+    height: 200px; 
+    border-radius: 50%;
+    object-fit: cover;
+    
+}
+#artistlist li {
+    flex: 0 1 25%;
+    display: flex;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    gap: 20px;
+    padding: 10px;
+    margin-left: 15%;
+    margin-top: 5%;
+  }
+#artistlist{
+    width: 100%;
+}
+#artist-box{
+    
+    
+}
+#artist-info{
+    
+}
+#artist-name{
+    width:40%;
+    margin-left:20%;
+    margin-top:30%;
+    font-size:40px;
+}
