@@ -4,6 +4,9 @@ const router = express.Router();
 const User = require('../model/user');
 const Spotify = require('../model/gallery');
 
+const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
+const API_KEY = process.env.TICKETMASTER_CLIENT_ID
+
 /**
  * Retrieves access_token for a given user ID from the User model.
  * @param {string} userId - The ID of the user whose playlist is to be retrieved.
@@ -118,7 +121,6 @@ router.get('/v0/artist', async (req, res)=> {
         const userId = req.session.user.spotifyId;
         // const ACCESS_TOKEN = await getAccessToken(userId);
         const ACCESS_TOKEN = req.session.user.accessToken;
-        // console.log(ACCESS_TOKEN);
 
         // update user's playlist info
         await updatePlaylist(userId);
@@ -152,17 +154,78 @@ router.get('/v0/artist', async (req, res)=> {
         });
 
         const artistRows = artistDetails.data.artists;
-        // console.log(artistRows[0]);
+        const artistNameList = artistRows.map(response => response.name);
+        // console.log(artistNameList);
         const artistData = artistRows.map(response => ({
             id: response.id,
             name: response.name,
             image: response.images.slice(0, 3) // Taking the last image as an example
         }));
 
+        let allArtistsEvents = [];
+
+        for (const [index, name] of artistNameList.entries()){
+            try{
+                const response = await axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`);
+
+                let events = response.data._embedded?.events ?? [];
+
+                // Map the events
+                let artistEvents = events.map(event => ({
+                    name: event.name,
+                    date: event.dates.start.localDate,
+                    time: event.dates.start.localTime,
+                    url: event.url,
+                    images_url: event.images[0].url
+                }));
+
+                // Add this artist and their events to the allArtistsEvents array
+                allArtistsEvents.push({
+                    artistName: name,
+                    events: artistEvents,
+                });
+
+            } catch (error) {
+                console.error(`Error fetching events for artist ${name}:`, error.response ? error.response.data : error.message);
+                allArtistsEvents.push({
+                    artistName: name,
+                    events: [],
+                });
+            }
+
+            //A delay to avoid hitting the rate limit
+            await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
+        }
+
+        allArtistsEvents.forEach(artist => {
+            artist.events = artist.events.filter(event => {
+                // Check if the event has a 'url' attribute and it's a non-empty string
+                return event.url && typeof event.url === 'string' && event.url.trim() !== '';
+            });
+        });
+        console.log('All Artists Events:', allArtistsEvents);
+
+
+        allArtistsEvents.forEach(artistEvents => {
+            // let artistIndex = gallery.artist.findIndex(a => a.name === artistEvents.artistName);
+            let artistIndex = artistData.findIndex(a => a.name === artistEvents.artistName);
+
+            if (artistIndex === -1) {
+                // Artist does not exist, add a new artist entry
+                artistData.push({
+                    name: artistEvents.artistName,
+                    ticket: artistEvents.events,
+                    image: artistEvents.images
+                });
+            } else {
+                // Artist exists, update their events
+                artistData[artistIndex].ticket = artistEvents.events;
+            }
+        });
         try{
             const query = {'id': userId}
             const update = {'$addToSet': {artist: {$each: artistData}}};
-            const updateArtistData = await Spotify.updateOne(
+            await Spotify.updateOne(
                 query, // The filter to find the document
                 update, // The update operation
                 { upsert: true, new: true }
@@ -171,6 +234,9 @@ router.get('/v0/artist', async (req, res)=> {
         } catch(error) {
             console.log('Error in upsert:', error);
         }
+
+        // res.json(artistData)
+        
     } catch (error) {
         // If the token is invalid or expired, Spotify API will return a 401 - Unauthorized error
         if (error.response && error.response.status === 401) {

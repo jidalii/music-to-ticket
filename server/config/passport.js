@@ -45,7 +45,9 @@ passport.use(
         },
         async function(req, accessToken, refreshToken, profile, done) {
             let avatar = null;
+            
             if(profile.photos) {
+                console.log(profile.photos[1]);
                 avatar = profile.photos[1].value
             }
             const user = await User.findOneAndUpdate(

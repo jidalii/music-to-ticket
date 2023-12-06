@@ -1,9 +1,7 @@
 require('dotenv').config({path: '../env'});
 const express = require("express");
-const passport = require('passport');
 const axios = require('axios');
 const router = express.Router();
-const mongoose = require("mongoose");
 const Spotify = require("../model/gallery");
 const User = require('../model/user');
 
@@ -55,15 +53,16 @@ router.get('/event/:artist', async (req, res) => {
 // New route to get events for all artists in MongoDB
 router.get('/events', async (req, res) => {
     try {
-        const user_id = req.session.userId;
+        const user_id = req.session.user.userId;
+        // const user_id = "31lbzo6ubfwku5s5xxmlhaxxooz4";
         const artistNames = await getArtistNamesFromDB(user_id);
 
         //console.log(artistNames);
 
         let allArtistsEvents = [];
 
-        const eventsPromises = artistNames.map(name => axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`)
-        );
+        // const eventsPromises = artistNames.map(name => axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`)
+        // );
 
         for (const [index, name] of artistNames.entries()){
             try{
@@ -104,11 +103,7 @@ router.get('/events', async (req, res) => {
                 return event.url && typeof event.url === 'string' && event.url.trim() !== '';
             });
         });
-        //console.log('All Artists Events:', allArtistsEvents);
-
-        //Update and create ticket array and artist array
-        const user = await User.findOne({spotifyId: user_id});
-
+        console.log('All Artists Events:', allArtistsEvents);
 
         // Fetch the user's gallery from the database
         let gallery = await Spotify.findOne({ id: user_id });
@@ -132,9 +127,12 @@ router.get('/events', async (req, res) => {
         });
 
         // Save the updated gallery
+        console.log(gallery);
         await gallery.save();
+        const artists = await Spotify.findOne({spotifyId: user_id})
 
-        res.render('events', { events: allArtistsEvents });
+        // res.render('events', { events: allArtistsEvents });
+        res.json({ events: allArtistsEvents })
 
     } catch (error) {
         console.error('Error fetching events for artists:', error);
