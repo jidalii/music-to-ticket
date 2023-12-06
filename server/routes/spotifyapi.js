@@ -114,9 +114,10 @@ router.get('/v0/playlist', async(req, res) => {
 router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
-        console.log(req.session.user);
+        console.log("v0/artist", req.session.user);
         const userId = req.session.user.spotifyId;
-        const ACCESS_TOKEN = await getAccessToken(userId);
+        // const ACCESS_TOKEN = await getAccessToken(userId);
+        const ACCESS_TOKEN = req.session.user.accessToken;
         // console.log(ACCESS_TOKEN);
 
         // update user's playlist info
@@ -184,9 +185,10 @@ router.get('/v0/artist', async (req, res)=> {
 })
 
 router.get('/v0/top3-artist', async(req, res) => {
-    // console.log("top3", req.session);
+    console.log("top3-artist", req.session.user);
     const userId = req.session.user.spotifyId
-    const ACCESS_TOKEN = await getAccessToken(userId);
+    // const ACCESS_TOKEN = await getAccessToken(userId);
+    const ACCESS_TOKEN = req.session.user.accessToken;
 
     // update user's playlist info
     await updatePlaylist(userId);

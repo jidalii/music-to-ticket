@@ -17,33 +17,26 @@ interface Artist {
 }
 
 function ProfilePage() {
-    const [user, setUser] = useState<User | null>(null);
-    const [artist, setArtist] = useState<Artist | null>(null);
-
+    const [userAndArtist, setUserAndArtist] = useState<[User | null, Artist | null] | null>(null);
+    const [user, artist] = userAndArtist || [null, null];
+    
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
-                setUser(response.data);
-                console.log(response.data);
+                const responseUser = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
+                const responseArtist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true });
+                
+                console.log("ProfilePage:")
+                console.log(responseUser.data)
+                console.log(responseArtist.data)
+                setUserAndArtist([responseUser.data, responseArtist.data]);
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                setUserAndArtist([null, null]); // or handle the error in another way
+                console.error('Error fetching data:', error);
             }
         };
-
+    
         fetchUserData();
-    }, []);
-    useEffect(() => {
-        const fetchArtistData = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); // Replace with the actual artist ID
-                setArtist(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching artist data:', error);
-            }
-        };
-        fetchArtistData();
     }, []);
 
     return (
