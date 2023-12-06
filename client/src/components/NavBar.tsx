@@ -56,7 +56,7 @@ function NavBar() {
                     <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/profile">My Profile</Link>
                     <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/gallery">My Gallery</Link>
                     <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/about">About us</Link>
-                    <a href='./Logout.tsx'>log out</a>
+                    <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/">Log out</Link>
               </div>
             </div>
             ):(

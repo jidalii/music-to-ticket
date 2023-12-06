@@ -9,7 +9,7 @@ interface Image {
   width: Number
   height: Number
 }
-interface Ticket {
+interface ticket {
   name: String,
   date: String,
   time: String,
@@ -19,18 +19,20 @@ interface Ticket {
 interface Artist {
     id: string,
     name: string,
-    ticket: Ticket[],
+    ticket: ticket[],
     image: Image[]
 }
 
 function fetchArtistList() {
     const [artistList, setArtistList] = useState<Artist[] | null>(null);
+    const [artists, ticket] = artistList || [null, null];
 
     useEffect(() => {
         const fetchArtistData = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/spotify/v0/artist', { withCredentials: true });
-                setArtistList(response.data);
+                const responseticket = await axios.get('http://localhost:8000/ticket/events', { withCredentials: true });
+                setArtistList([response.data, responseticket.data]);
                 // USER_ID = response.data
                 // console.log(response.data);
             } catch (error) {
@@ -39,42 +41,28 @@ function fetchArtistList() {
         };
 
         fetchArtistData();
-    }, []);
 
-    const [ticketList, setTicketList] = useState<Ticket[] | null>(null);
-
-    useEffect(() => {
-        const fetchArtistData = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/spotify/v0/artist', { withCredentials: true });
-                setArtistList(response.data);
-                // USER_ID = response.data
-                // console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching artist data:', error);
-            }
-        };
-
-        fetchArtistData();
-    }, []);
+      }, []);
 
     if (artistList !== null){
       // console.log(artistList);
       return (
         <div className = "flex justify-center w-full">
           <ul role="list" className="divide-y divide-gray-100 flex flex-col items-center">
-            {artistList.map((artist) => (
-              <li key={artist.id} className="flex items-center gap-x-6 py-5">
+            {artistList.map((artists) => (
+              <li key={artists.id} className="flex items-center gap-x-6 py-5">
                 <div className="flex min-w-0 max-w-20 gap-x-4">
-                  <img className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[2].url} alt="artist_img" />
+                  <img className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artists.image[2].url} alt="artist_img" />
                   <div className="min-w-3 flex-auto">
-                    <p className="text-3xl font-semibold leading-6 text-gray-900">{artist.name}</p>
+                    <p className="text-3xl font-semibold leading-6 text-gray-900">{artists.name}</p>
                     {/* <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p> */}
-                    {/* <p className="text-3xl font-semibold leading-6 text-gray-900">{artist.}</p> */}
                   </div>
                 </div>
               </li>
             ))}
+            {artistList.map((ticket)=>
+              <a>{ticket.name}</a>
+            )}
           </ul>
         </div>
         
