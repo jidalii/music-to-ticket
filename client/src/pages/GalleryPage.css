@@ -1,6 +1,7 @@
+
 #gallery-page{
     background-color: white;
-    height: 100vh;
+    height: 100%;
 }
 #artist-img{
     flex-shrink: 0;
@@ -8,6 +9,7 @@
     height: 200px; 
     border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 15%;
     
 }
 #artistlist li {
@@ -19,6 +21,8 @@
     padding: 10px;
     margin-left: 15%;
     margin-top: 5%;
+    width: 75%;
+    border-bottom: 1px solid #e2e8f0; /* Adjust the color as needed */
   }
 #artistlist{
     width: 100%;
@@ -28,7 +32,7 @@
     
 }
 #artist-info{
-    
+
 }
 #artist-name{
     width:40%;
