@@ -17,33 +17,26 @@ interface Artist {
 }
 
 function ProfilePage() {
-    const [user, setUser] = useState<User | null>(null);
-    const [artist, setArtist] = useState<Artist | null>(null);
-
+    const [userAndArtist, setUserAndArtist] = useState<[User | null, Artist | null] | null>(null);
+    const [user, artist] = userAndArtist || [null, null];
+    
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
-                setUser(response.data);
-                console.log(response.data);
+                const responseUser = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
+                const responseArtist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true });
+                
+                console.log("ProfilePage:")
+                console.log(responseUser.data)
+                console.log(responseArtist.data)
+                setUserAndArtist([responseUser.data, responseArtist.data]);
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                setUserAndArtist([null, null]); // or handle the error in another way
+                console.error('Error fetching data:', error);
             }
         };
-
+    
         fetchUserData();
-    }, []);
-    useEffect(() => {
-        const fetchArtistData = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); // Replace with the actual artist ID
-                setArtist(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching artist data:', error);
-            }
-        };
-        fetchArtistData();
     }, []);
 
     return (
@@ -52,8 +45,8 @@ function ProfilePage() {
             {user && (
                 <body>
                     <header>
-                        <div class="profile-header">
-                            <div class="user-info">
+                        <div className="profile-header">
+                            <div className="user-info">
                                 <h2 className='text-2xl'>
                                     Hi! This is
                                 </h2>
@@ -65,7 +58,7 @@ function ProfilePage() {
                                     \</p>*/}
                             </div >
                             
-                            <div class="pic">
+                            <div className="pic">
                                 <img src={user.avatar} alt="No Profile Image"/>
                                 {/* {AvatarShow(user.avatar)} */}
                             </div>
@@ -81,7 +74,7 @@ function ProfilePage() {
                                     </ul>
                                     {/* Add create/edit/delete playlist functionality */}
                         </div>
-                        <div class="playlists">
+                        <div className="playlists">
                             <h3>User's Playlists</h3>
                             {/*<ul>
                             {user.playlists.map((playlist) => (
@@ -90,6 +83,22 @@ function ProfilePage() {
                             </ul>
                             {/* Add create/edit/delete playlist functionality */} 
                         </div>
+
+                        {/*artist && (
+                            <div>
+                            <h3>Top Artists</h3>
+                            <ul>
+                                {artist.map((artist) => (
+                                <li key={artist.id}>
+                                    <p>Name: {artist.name}</p>
+                                    <p>Type: {artist.type}</p>
+                                    <p>Songs: {artist.song.join(', ')}</p>
+                                    <img src={artist.image} alt={artist.name} />
+                                </li>
+                                ))}
+                            </ul>
+                            </div>
+                        )*/}
     
                 </body>
 
@@ -98,5 +107,6 @@ function ProfilePage() {
         </div>
     );
 }
+
 
 export default ProfilePage;
