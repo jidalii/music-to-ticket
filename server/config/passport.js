@@ -46,7 +46,7 @@ passport.use(
         async function(req, accessToken, refreshToken, profile, done) {
             let avatar = null;
             if(profile.photos) {
-                avatar = profile.photos[0].value
+                avatar = profile.photos[1].value
             }
             const user = await User.findOneAndUpdate(
                 {spotifyId: profile.id},
