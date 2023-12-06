@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../tailwind.css'
+import '../GalleryPage.css'
 
 
 interface Image {
@@ -31,6 +32,9 @@ function fetchArtistList() {
 
         fetchArtistData();
     }, []);
+
+
+    
     if (artistList !== null){
       // console.log(artistList);
       return (
@@ -42,7 +46,7 @@ function fetchArtistList() {
                   <img className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[2].url} alt="artist_img" />
                   <div className="min-w-3 flex-auto">
                     <p className="text-3xl font-semibold leading-6 text-gray-900">{artist.name}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p>
+                    {/* <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p> */}
                   </div>
                 </div>
               </li>
