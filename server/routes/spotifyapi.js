@@ -222,20 +222,20 @@ router.get('/v0/artist', async (req, res)=> {
                 artistData[artistIndex].ticket = artistEvents.events;
             }
         });
-        // try{
-        //     const query = {'id': userId}
-        //     const update = {'$addToSet': {artist: {$each: artistData}}};
-        //     await Spotify.updateOne(
-        //         query, // The filter to find the document
-        //         update, // The update operation
-        //         { upsert: true, new: true }
-        //     );
-        //     res.json(artistData);
-        // } catch(error) {
-        //     console.log('Error in upsert:', error);
-        // }
+        try{
+            const query = {'id': userId}
+            const update = {'$addToSet': {artist: {$each: artistData}}};
+            await Spotify.updateOne(
+                query, // The filter to find the document
+                update, // The update operation
+                { upsert: true, new: true }
+            );
+            res.json(artistData);
+        } catch(error) {
+            console.log('Error in upsert:', error);
+        }
 
-        res.json(artistData)
+        // res.json(artistData)
         
     } catch (error) {
         // If the token is invalid or expired, Spotify API will return a 401 - Unauthorized error
