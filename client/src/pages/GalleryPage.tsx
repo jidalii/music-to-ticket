@@ -51,11 +51,11 @@ function fetchArtistList() {
           <ul role="list" className="divide-y divide-gray-100 flex flex-col items-center">
             {artistList.map((artist) => (
               <li key={artist.id} className="flex items-center gap-x-6 py-5">
-                <div className="flex min-w-0 max-w-20 gap-x-4">
-                  <img className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[2].url} alt="artist_img" />
-                  <div className="min-w-3 flex-auto">
-                    <p className="text-3xl font-semibold leading-6 text-gray-900">{artist.name}</p>
-                    {/* <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p> */}
+                <div id="artist-box" className="flex min-w-0 max-w-20 gap-x-4">
+                  <img id="artist-img"className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[2].url} alt="artist_img" />
+                  <div  id="artist-info" className="min-w-3 flex-auto">
+                    <p id="artist-name" className="text-3xl font-semibold leading-16 text-gray-900 w-180">{artist.name}</p>
+                    {/*<p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p>*/}
                   </div>
                 </div>
                 <div>
@@ -75,7 +75,6 @@ function fetchArtistList() {
             ))}
           </ul>
         </div>
-        
       )
     }
     else{
