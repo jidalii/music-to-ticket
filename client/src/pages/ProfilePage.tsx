@@ -86,16 +86,49 @@ function ProfilePage() {
                     </header>
                     
                         <div className="music-preferences">
-                            <h3>Favorite Genres</h3>
+
                                 {/*<ul>
                                     {user.favoriteGenres.map((genre) => (
                                         <li key={genre}>{genre}</li>
                                     ))}
                                     </ul>
                                     {/* Add create/edit/delete playlist functionality */}
-                        </div>
+                        
                         <div className="playlists">
-                            <h3>User's Playlists</h3>
+                            <h3>Touch Your Soul, You May Want to Listen Now ...</h3>
+                            <div id="top-container">
+                                <div id="top1">
+                                    <img id="img-top1" src={artist[0].image}></img>
+                                    <p id="name-top1">{artist[0].name}</p>
+                                    <ul id="songs-top1">
+                                        <li>{artist[0].song[0]}</li>
+                                        <li>{artist[0].song[1]}</li>
+                                        <li>{artist[0].song[2]}</li>
+                                    </ul>
+                                </div>
+                                <div id="top2">
+                                    <img id="img-top2" src={artist[1].image}></img>
+                                    <p id="name-top2">{artist[1].name}</p>
+                                    <ul id="songs-top2">
+                                        <li>{artist[1].song[0]}</li>
+                                        <li>{artist[1].song[1]}</li>
+                                        <li>{artist[1].song[2]}</li>
+                                    </ul>
+                                </div>
+                                <div id="top3">
+                                    <img id="img-top3" src={artist[2].image}></img>
+                                    <p id="name-top3">{artist[2].name}</p>
+                                    <ul id="songs-top3">
+                                        <li>{artist[2].song[0]}</li>
+                                        <li>{artist[2].song[1]}</li>
+                                        <li>{artist[2].song[2]}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {/*<div>
+                        <h3>Want to see their concerts ?</h3>
+                                    </div>*/}
                             {/*<ul>
                             {user.playlists.map((playlist) => (
                                 <li key={playlist.id}>{playlist.name}</li>
@@ -104,21 +137,7 @@ function ProfilePage() {
                             {/* Add create/edit/delete playlist functionality */} 
                         </div>
 
-                        {/*artist && (
-                            <div>
-                            <h3>Top Artists</h3>
-                            <ul>
-                                {artist.map((artist) => (
-                                <li key={artist.id}>
-                                    <p>Name: {artist.name}</p>
-                                    <p>Type: {artist.type}</p>
-                                    <p>Songs: {artist.song.join(', ')}</p>
-                                    <img src={artist.image} alt={artist.name} />
-                                </li>
-                                ))}
-                            </ul>
-                            </div>
-                        )*/}
+
     
                 </body>
 

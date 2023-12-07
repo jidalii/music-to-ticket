@@ -62,7 +62,17 @@ function fetchArtistList() {
       )
     }
     else{
-      return "artists not found"
+      return (
+        <div className='gallery-loading'>
+          <p className='loading'>
+            More Patience!
+          </p>
+          <p className='ld'>
+          Your favorite singers are coming to you ...
+          </p>
+
+        </div>
+      )
     }
     
 }
