@@ -5,6 +5,7 @@ import try2 from '../images/try.jpeg';
 import pll from '../images/playlist.jpg';
 import ticket from '../images/ticket.jpg';
 import frontimg from '../images/frontimg.jpg';
+import Mayday from '../images/Mayday.jpg';
 
 function AboutPage() {
     return (
@@ -59,12 +60,12 @@ function AboutPage() {
             </section>
 
             <section id="section4" class="section">
-                <img src={xin} width="600" height="800" alt = "Somepic" />
+                <img src={Mayday} width="600" height="800" alt = "Somepic" />
                 <section>
                     <h2>Join Our Community</h2>
                     <p id = "login">Login in with your spotify Now!</p>
                     <p id = "blogin">Try what I've mentioned above, and Enjoy your time.</p>
-                    <button id="loginbutton"
+                    <button id="loginbutton-about"
                         className="bg-spotify-green text-white px-5 py-2.5 inline-block text-lg m-1 cursor-pointer rounded-full font-bold"
                         onClick={() => window.location.href='http://localhost:8000/auth/spotify'}
                          >
