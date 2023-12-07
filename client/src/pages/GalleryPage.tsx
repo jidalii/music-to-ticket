@@ -20,12 +20,15 @@ interface Artist {
     id: string,
     name: string,
     image: Image[],
-    tickect: Event[]
+    // ticket: {
+    //   events: Event[]; // Adjusted this line to represent events as an array of Event objects
+    // }[];
+    ticket: Event[]
 }
 
 function fetchArtistList() {
     const [artistList, setArtistList] = useState<Artist[] | null>(null);
-    const [artists, ticket] = artistList || [null, null];
+    // const [artists, ticket] = artistList || [null, null];
 
     useEffect(() => {
         const fetchArtistData = async () => {
@@ -46,27 +49,37 @@ function fetchArtistList() {
       return (
         <div className = "flex justify-center w-full">
           <ul role="list" className="divide-y divide-gray-100 flex flex-col items-center">
-            {artistList.map((artists) => (
-              <li key={artists.id} className="flex items-center gap-x-6 py-5">
+            {artistList.map((artist) => (
+              <li key={artist.id} className="flex items-center gap-x-6 py-5">
                 <div className="flex min-w-0 max-w-20 gap-x-4">
-                  <img className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artists.image[2].url} alt="artist_img" />
+                  <img className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[2].url} alt="artist_img" />
                   <div className="min-w-3 flex-auto">
-                    <p className="text-3xl font-semibold leading-6 text-gray-900">{artists.name}</p>
+                    <p className="text-3xl font-semibold leading-6 text-gray-900">{artist.name}</p>
                     {/* <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p> */}
                   </div>
                 </div>
+                <div>
+                  {/* {artist.ticket.map((ticket, index) => (
+                      <div key={index}>
+                        {ticket.events.length > 0 ? (
+                          // Access event properties here, e.g., ticket.events[0].date
+                          <p>{ticket.events[0].date}</p>
+                        ):(
+                          <p>no info</p>
+                        )
+                      }
+                      </div>
+                  ))} */}
+                </div>
               </li>
             ))}
-            {artistList.map((ticket)=>
-              <a>{ticket.name}</a>
-            )}
           </ul>
         </div>
         
       )
     }
     else{
-      return "artists not found"
+      return "loading"
     }
     
 }
