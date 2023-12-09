@@ -2,6 +2,7 @@
 #gallery-page{
     background-color: white;
     height: 100%;
+    
 }
 #artist-img{
     flex-shrink: 0;
@@ -9,7 +10,7 @@
     height: 200px; 
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15%;
+    margin-bottom: 5%;
     
 }
 #artistlist li {
@@ -27,20 +28,38 @@
 #artistlist{
     width: 100%;
 }
-#artist-box{
-    
-    
-}
-#artist-info{
 
-}
 #artist-name{
     width:40%;
     margin-left:20%;
     margin-top:30%;
     font-size:40px;
+    color: #333;
 }
-
-#try{
-    object-fit: cover;
+.gallery-loading{
+    height:100vh;
+    background-color: white;
 }
+.loading{
+    margin-left:30vh;
+    margin-top: 15vh;
+    font-size: 80px;
+}
+.ld{
+    margin-left:30vh;
+    font-size: 80px;
+    margin-right: 30vh;
+}
+.popup-box {
+    position: relative;
+    top: -15vh;
+    left: 30vh;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px gray;
+    z-index: 1;
+    
+    backdrop-filter: blur(2px) brightness(98%);
+    border-radius: 5px;
+  }

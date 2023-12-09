@@ -9,7 +9,7 @@ body{
 :root {
   height: 100%;
   /*background:radial-gradient(closest-corner at center,rgb(175, 174, 174),white);*/
-  background:linear-gradient(in oklab, rgb(100, 174, 100),white);
+  background:linear-gradient(in oklab,#32ac32,white);
   color-scheme: dark;
 }
 #footer {
@@ -28,7 +28,9 @@ body{
 #loginpage{
   font-style:oblique;
   font-weight: bolder;
-  color:#228B22;
+  /*color:#228B22;*/
+  color:#2c9f2c;
+  font-size: 7vh;
 }
 #loginbutton{
   font-weight: bold;
@@ -37,6 +39,7 @@ body{
   width:45%;
   padding:3%;
   box-shadow: 10px 10px 30px gray;
+  margin-top: 20px;
 }
 
 #background_box {

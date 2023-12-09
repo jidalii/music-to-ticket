@@ -43,22 +43,36 @@ function fetchArtistList() {
 
         fetchArtistData();
     }, []);
+
+    const handleMouseEnter = (artist: Artist) => {
+      setSelectedArtist(artist);
+    };
+  
+    const handleMouseLeave = () => {
+      setSelectedArtist(null);
+    };
     
     if (artistList !== null){
       return (
         <div className = "flex justify-center w-full">
           <ul role="list" className="divide-y divide-gray-100 flex flex-col items-center">
             {artistList.map((artist) => (
-              <li key={artist.id} className="flex items-center gap-x-6 py-5">
-                {/* <Routes>
-                    <Route path="artist/:id" element={<EventPage />} />
-                </Routes>
-                <Link to={`/artist/${artist.id}`}> */}
+              <li key={artist.id} className="flex items-center gap-x-6 py-5" onMouseEnter={() => handleMouseEnter(artist)}
+              onMouseLeave={handleMouseLeave}>
                 <div id="artist-box" className="flex min-w-0 max-w-20 gap-x-4">
-                  <img id="artist-img"className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[2].url} alt="artist_img" />
+                  <img id="artist-img"className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[1].url} alt="artist_img" />
                   <div  id="artist-info" className="min-w-3 flex-auto">
                     <p id="artist-name" className="text-3xl font-semibold leading-16 text-gray-900 w-180">{artist.name}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p>
+                    {/*<p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p>*/}
+                    {selectedArtist === artist && (
+                  <div className="popup-box">
+                    {/* You can add additional information or components here */}
+                   popup-box for {artist.name}
+                   <p>Wanting和cc是两个薯条脑袋嘿嘿 &#127839;</p>
+
+                  </div>
+                )}
+
                   </div>
                 </div>
                {/* </Link> */}
@@ -85,7 +99,17 @@ function fetchArtistList() {
       )
     }
     else{
-      return "no artist"
+      return (
+        <div className='gallery-loading'>
+          <p className='loading'>
+            More Patience!
+          </p>
+          <p className='ld'>
+          Your favorite singers are coming to you ...
+          </p>
+
+        </div>
+      )
     }
     
 }
