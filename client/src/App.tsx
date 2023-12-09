@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import AboutPage from './pages/AboutPage'
 import ProfilePage from './pages/ProfilePage'
 import GalleryPage from './pages/GalleryPage'
+import EventPage from './pages/EventPage';
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/gallery/*" element={<GalleryPage />} />
+          <Route path="/artist/:id" element={<EventPage />} />
         </Routes>
       </div>
       <div>
