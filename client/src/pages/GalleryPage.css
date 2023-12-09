@@ -59,7 +59,28 @@
     border: 1px solid #ccc;
     box-shadow: 0 2px 5px gray;
     z-index: 1;
-    
+    font-weight: 550;
     backdrop-filter: blur(2px) brightness(98%);
     border-radius: 5px;
   }
+
+.blank-line {
+    margin-top: 25px; /* Adjust the margin as needed */
+}
+
+.blank-line1 {
+    margin-top: 15px; /* Adjust the margin as needed */
+}
+
+.ticket-button{
+  font-weight: bold;
+  font-size:14px;
+  /* color:ivory; */
+  width:60%;
+  padding:3%;
+  box-shadow: 5px 5px 10px gray;
+}
+
+.intro{
+    font-size:20px;
+}

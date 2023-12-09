@@ -64,31 +64,35 @@ function fetchArtistList() {
                   <img id="artist-img"className="h-24 w-24 rounded-full bg-gray-50 mr-3" src={artist.image[1].url} alt="artist_img" />
                   <div  id="artist-info" className="min-w-3 flex-auto">
                     <p id="artist-name" className="text-3xl font-semibold leading-16 text-gray-900 w-180">{artist.name}</p>
-                    {/*<p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p>*/}
-                    {/* {selectedArtist === artist && (
-                  <div className="popup-box"> */}
-                    {/* You can add additional information or components here */}
-                   {/* popup-box for {artist.name}
-                   <p>Wanting和cc是两个薯条脑袋嘿嘿 &#127839;</p> */}
-
-                  {/* </div>
-                )} */}
-                <div>
-                  {artist.ticket.map((ticket, index) => (
-                      <div key={index}>
-                        {ticket ? (
-                          // Access event properties here, e.g., ticket.events[0].date
-                          <div>
-                          <p>{ticket.date}</p>
-                          <p>{ticket.name}</p>
-                          </div>
-                        ):(
-                          <p>no info</p>
-                        )
-                      }
+                    {/* <p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p> */}
+                    {selectedArtist === artist && (
+                      <div className="popup-box">
+                      {/* You can add additional information or components here */}
+                      <p className='intro'>Recent concert for {artist.name}</p>
+                      {/* <p>Wanting和cc是两个薯条脑袋嘿嘿 &#127839;</p> */}
+                        <div>
+                          {artist.ticket.map((ticket, index) => (
+                            <div key={index}>
+                              {ticket !== null ? (
+                                // Access event properties here, e.g., ticket.events[0].date
+                                <ol>
+                                  <div className="blank-line1"></div>
+                                  <li>{index+1}. {ticket.name}</li>
+                                  <p>{ticket.date} {ticket.time}</p>
+                                  <a href={ticket.url} target="_blank">
+                                    <button className='ticket-button'>click me to get ticket!</button>
+                                  </a>
+                                  <div className="blank-line"></div>
+                                </ol>
+                              ):(
+                                <p>no info</p>
+                              )
+                            }
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                  ))}
-                </div>
+                    )}
                   </div>
                 </div>
               </li>
