@@ -17,47 +17,47 @@ interface Artist {
 }
 
 function ProfilePage() {
-    const [user, setUser] = useState<User | null>(null);
+    //const [user, setUser] = useState<User | null>(null);
     //const [artist, setArtist] = useState<Artist[] | null>(null);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
-                setUser(response.data);
-                console.log(response.data);
-
-                //const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
-                //setArtist(response_artist.data);
-                //console.log(response_artist.data);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-    // const [userAndArtist, setUserAndArtist] = useState<[User | null, Artist | null] | null>(null);
-    // const [user, artist] = userAndArtist || [null, null];
-    
     // useEffect(() => {
     //     const fetchUserData = async () => {
     //         try {
-    //             const responseUser = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
-    //             const responseArtist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true });
-                
-    //             console.log("ProfilePage:");
-    //             console.log(responseUser.data);
-    //             console.log(responseArtist.data);
-    //             setUserAndArtist([responseUser.data, responseArtist.data]);
+    //             const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
+    //             setUser(response.data);
+    //             console.log(response.data);
+
+    //             //const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
+    //             //setArtist(response_artist.data);
+    //             //console.log(response_artist.data);
     //         } catch (error) {
-    //             setUserAndArtist([null, null]); // or handle the error in another way
-    //             console.error('Error fetching data:', error);
+    //             console.error('Error fetching user data:', error);
     //         }
     //     };
-    
+
     //     fetchUserData();
     // }, []);
+    const [userAndArtist, setUserAndArtist] = useState<[User | null, Artist | null] | null>(null);
+    const [user, artist] = userAndArtist || [null, null];
+    
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const responseUser = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
+                const responseArtist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true });
+                
+                console.log("ProfilePage:");
+                console.log(responseUser.data);
+                console.log(responseArtist.data);
+                setUserAndArtist([responseUser.data, responseArtist.data]);
+            } catch (error) {
+                setUserAndArtist([null, null]); // or handle the error in another way
+                console.error('Error fetching data:', error);
+            }
+        };
+    
+        fetchUserData();
+    }, []);
 
     return (
         <div>
@@ -68,7 +68,7 @@ function ProfilePage() {
                         <div className="profile-header">
                             <div className="user-info">
                                 <h2 className='text-2xl'>
-                                    Hi! This is
+                                    Hi &#128171;
                                 </h2>
                                 <h3 className='text-8xl profile-name'>
                                     {user.username}
@@ -95,7 +95,7 @@ function ProfilePage() {
                                     {/* Add create/edit/delete playlist functionality */}
                         
                         <div className="playlists">
-                            <h3>Touch Your Soul, You May Want to Listen Now ...</h3>
+                            <h3>Touch Your Soul, You May Want to Listen Now &#x1F3A7;...</h3>
                             <div id="top-container">
                                 <div id="top1">
                                     <img id="img-top1" src={artist[0].image}></img>
