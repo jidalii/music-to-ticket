@@ -1,9 +1,7 @@
 require('dotenv').config({path: '../env'});
 const express = require("express");
-const passport = require('passport');
 const axios = require('axios');
 const router = express.Router();
-const mongoose = require("mongoose");
 const Spotify = require("../model/gallery");
 const User = require('../model/user');
 
@@ -11,11 +9,10 @@ const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
 const API_KEY = process.env.TICKETMASTER_CLIENT_ID
 
 
-
 // Function to get artist names from MongoDB
 async function getArtistNamesFromDB(user_id) {
     try {
-        
+
         const userGallery = await Spotify.findOne({ id: user_id });
         if (!userGallery || !userGallery.artist) {
             return [];  // Return an empty array if the user has no artists
@@ -64,15 +61,14 @@ router.get('/events', async (req, res) => {
 
         let allArtistsEvents = [];
 
-        const eventsPromises = artistNames.map(name => axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`)
-        );
+        // const eventsPromises = artistNames.map(name => axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`)
+        // );
 
         for (const [index, name] of artistNames.entries()){
             try{
                 const response = await axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`);
 
                 let events = response.data._embedded?.events ?? [];
-                
                 // Map the events
                 let artistEvents = events.map(event => ({
                     name: event.name,
@@ -99,46 +95,42 @@ router.get('/events', async (req, res) => {
             //A delay to avoid hitting the rate limit
             await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
         }
-        
-        
         allArtistsEvents.forEach(artist => {
             artist.events = artist.events.filter(event => {
                 // Check if the event has a 'url' attribute and it's a non-empty string
                 return event.url && typeof event.url === 'string' && event.url.trim() !== '';
             });
         });
-        //console.log('All Artists Events:', allArtistsEvents);
+        console.log('All Artists Events:', allArtistsEvents);
 
-
-        //Update and create ticket array and artist array
-        const user = await User.findOne({spotifyId: user_id});
-
-       
         // Fetch the user's gallery from the database
         let gallery = await Spotify.findOne({ id: user_id });
 
-        let allEvents_artist = allArtistsEvents;            
+        let allEvents_artist = allArtistsEvents;
 
-            allEvents_artist.forEach(artistEvents => {
-                let artistIndex = gallery.artist.findIndex(a => a.name === artistEvents.artistName);
-    
-                if (artistIndex === -1) {
-                    // Artist does not exist, add a new artist entry
-                    gallery.artist.push({
-                        name: artistEvents.artistName,
-                        ticket: artistEvents.events,
-                        image: artistEvents.images 
-                    });
-                } else {
-                    // Artist exists, update their events
-                    gallery.artist[artistIndex].ticket = artistEvents.events;
-                }       
-            });
+        allEvents_artist.forEach(artistEvents => {
+            let artistIndex = gallery.artist.findIndex(a => a.name === artistEvents.artistName);
 
-            // Save the updated gallery
-            await gallery.save();
-            
-        res.render('events', { events: allArtistsEvents }); 
+            if (artistIndex === -1) {
+                // Artist does not exist, add a new artist entry
+                gallery.artist.push({
+                    name: artistEvents.artistName,
+                    ticket: artistEvents.events,
+                    image: artistEvents.images
+                });
+            } else {
+                // Artist exists, update their events
+                gallery.artist[artistIndex].ticket = artistEvents.events;
+            }
+        });
+
+        // Save the updated gallery
+        console.log(gallery);
+        await gallery.save();
+        const artists = await Spotify.findOne({spotifyId: user_id})
+
+        // res.render('events', { events: allArtistsEvents });
+        res.json({ events: allArtistsEvents })
 
     } catch (error) {
         console.error('Error fetching events for artists:', error);
@@ -146,7 +138,7 @@ router.get('/events', async (req, res) => {
     }
 });
 
-//:) nothing useful
+//:) nothing
 router.get('/events/fun', (req, res) => {res.status(418).send("I'm a teapot"); });
 
 module.exports = router;

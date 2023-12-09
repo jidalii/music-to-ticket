@@ -1,0 +1,86 @@
+
+#gallery-page{
+    background-color: white;
+    height: 100%;
+    
+}
+#artist-img{
+    flex-shrink: 0;
+    width: 200px; /* 100px */
+    height: 200px; 
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 5%;
+    
+}
+#artistlist li {
+    flex: 0 1 25%;
+    display: flex;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    gap: 20px;
+    padding: 10px;
+    margin-left: 15%;
+    margin-top: 5%;
+    width: 75%;
+    border-bottom: 1px solid #e2e8f0; /* Adjust the color as needed */
+  }
+#artistlist{
+    width: 100%;
+}
+
+#artist-name{
+    width:40%;
+    margin-left:20%;
+    margin-top:30%;
+    font-size:40px;
+    color: #333;
+}
+.gallery-loading{
+    height:100vh;
+    background-color: white;
+}
+.loading{
+    margin-left:30vh;
+    margin-top: 15vh;
+    font-size: 80px;
+}
+.ld{
+    margin-left:30vh;
+    font-size: 80px;
+    margin-right: 30vh;
+}
+.popup-box {
+    position: relative;
+    top: -15vh;
+    left: 30vh;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px gray;
+    z-index: 1;
+    font-weight: 550;
+    backdrop-filter: blur(2px) brightness(98%);
+    border-radius: 5px;
+  }
+
+.blank-line {
+    margin-top: 25px; /* Adjust the margin as needed */
+}
+
+.blank-line1 {
+    margin-top: 15px; /* Adjust the margin as needed */
+}
+
+.ticket-button{
+  font-weight: bold;
+  font-size:14px;
+  /* color:ivory; */
+  width:60%;
+  padding:3%;
+  box-shadow: 5px 5px 10px gray;
+}
+
+.intro{
+    font-size:20px;
+}

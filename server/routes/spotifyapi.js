@@ -4,7 +4,8 @@ const router = express.Router();
 const User = require('../model/user');
 const Spotify = require('../model/gallery');
 
-
+const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
+const API_KEY = process.env.TICKETMASTER_CLIENT_ID
 
 /**
  * Retrieves access_token for a given user ID from the User model.
@@ -12,7 +13,7 @@ const Spotify = require('../model/gallery');
  * @returns {string} access_token of the user with id `userId`
  */
 const getAccessToken = async (userId) => {
-    // console.log('acc', userId);
+    // console.log(userId); 
     const user = await User.findOne(
         {
             spotifyId: userId
@@ -23,7 +24,7 @@ const getAccessToken = async (userId) => {
     if (!user) {
         console.log('user not found');
     }
-
+    console.log(user);
     if (!user.accessToken) {
         return res.status(404).send('Access token not found');
     }
@@ -99,8 +100,7 @@ const getPlaylist = async(userId) => {
 router.get('/v0/playlist', async(req, res) => {
     try{
         // 1. get userId 
-        // const userId = req.query.userId;
-        // console.log(req.session);
+        // console.log("v0.playlist", req.session.user.spotifyId);
         const userId = req.session.user.spotifyId
         // 2. get playlists
         playlists = await updatePlaylist(userId);
@@ -123,9 +123,10 @@ router.get('/v0/playlist', async(req, res) => {
 router.get('/v0/artist', async (req, res)=> {
     try{
         // params for api call
-        // const userId = req.query.userId;
-        const userId = req.session.user.spotifyId
-        const ACCESS_TOKEN = await getAccessToken(userId);
+        console.log("v0/artist", req.session.user);
+        const userId = req.session.user.spotifyId;
+        // const ACCESS_TOKEN = await getAccessToken(userId);
+        const ACCESS_TOKEN = req.session.user.accessToken;
 
         // update user's playlist info
         await updatePlaylist(userId);
@@ -144,7 +145,6 @@ router.get('/v0/artist', async (req, res)=> {
                 }
             });
             response.data.items.forEach(item => {
-                console.log('item',item);
                 item.track.artists.forEach(artist => {
                     if (!artistId_ls.includes(artist.id)){
                         artistId_ls.push(artist.id);
@@ -152,7 +152,6 @@ router.get('/v0/artist', async (req, res)=> {
                 });
             });
         }
-        console.log(artistId_ls);
         const combinedString = artistId_ls.join(',');
         const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
             headers: {
@@ -161,17 +160,78 @@ router.get('/v0/artist', async (req, res)=> {
         });
 
         const artistRows = artistDetails.data.artists;
-        console.log(artistRows[0]);
+        const artistNameList = artistRows.map(response => response.name);
+        // console.log(artistNameList);
         const artistData = artistRows.map(response => ({
             id: response.id,
             name: response.name,
             image: response.images.slice(0, 3) // Taking the last image as an example
         }));
 
+        let allArtistsEvents = [];
+
+        for (const [index, name] of artistNameList.entries()){
+            try{
+                const response = await axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`);
+
+                let events = response.data._embedded?.events ?? [];
+
+                // Map the events
+                let artistEvents = events.map(event => ({
+                    name: event.name,
+                    date: event.dates.start.localDate,
+                    time: event.dates.start.localTime,
+                    url: event.url,
+                    images_url: event.images[0].url
+                }));
+
+                // Add this artist and their events to the allArtistsEvents array
+                allArtistsEvents.push({
+                    artistName: name,
+                    events: artistEvents,
+                });
+
+            } catch (error) {
+                console.error(`Error fetching events for artist ${name}:`, error.response ? error.response.data : error.message);
+                allArtistsEvents.push({
+                    artistName: name,
+                    events: [],
+                });
+            }
+
+            //A delay to avoid hitting the rate limit
+            await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
+        }
+
+        allArtistsEvents.forEach(artist => {
+            artist.events = artist.events.filter(event => {
+                // Check if the event has a 'url' attribute and it's a non-empty string
+                return event.url && typeof event.url === 'string' && event.url.trim() !== '';
+            });
+        });
+        console.log('All Artists Events:', allArtistsEvents);
+
+
+        allArtistsEvents.forEach(artistEvents => {
+            // let artistIndex = gallery.artist.findIndex(a => a.name === artistEvents.artistName);
+            let artistIndex = artistData.findIndex(a => a.name === artistEvents.artistName);
+
+            if (artistIndex === -1) {
+                // Artist does not exist, add a new artist entry
+                artistData.push({
+                    name: artistEvents.artistName,
+                    ticket: artistEvents.events,
+                    image: artistEvents.images
+                });
+            } else {
+                // Artist exists, update their events
+                artistData[artistIndex].ticket = artistEvents.events;
+            }
+        });
         try{
             const query = {'id': userId}
             const update = {'$addToSet': {artist: {$each: artistData}}};
-            const updateArtistData = await Spotify.updateOne(
+            await Spotify.updateOne(
                 query, // The filter to find the document
                 update, // The update operation
                 { upsert: true, new: true }
@@ -180,6 +240,9 @@ router.get('/v0/artist', async (req, res)=> {
         } catch(error) {
             console.log('Error in upsert:', error);
         }
+
+        // res.json(artistData)
+        
     } catch (error) {
         // If the token is invalid or expired, Spotify API will return a 401 - Unauthorized error
         if (error.response && error.response.status === 401) {
@@ -192,5 +255,143 @@ router.get('/v0/artist', async (req, res)=> {
     }
 
 })
+router.get('/v0/top3-artist', async(req, res) => {
+    console.log("top3-artist", req.session.user);
+    const userId = req.session.user.spotifyId
+    // const ACCESS_TOKEN = await getAccessToken(userId);
+    const ACCESS_TOKEN = req.session.user.accessToken;
+
+    // update user's playlist info
+    await updatePlaylist(userId);
+
+    // get user's all playlist
+    const playlist_ls = await getPlaylist(userId);
+
+    // store artist object as list
+    let artistId_ls = {};
+    let songList = {}
+
+    for(const playlist of playlist_ls) {
+        const playlist_id = playlist.id
+        const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+            headers: {
+                'Authorization': `Bearer ${ACCESS_TOKEN}`
+            }
+        });
+        response.data.items.forEach(item => {
+            item.track.artists.forEach(artist => {
+                if(artist.id in artistId_ls) {
+                    artistId_ls[artist.id] += 1;
+                } else {
+                    artistId_ls[artist.id] = 1;
+                }
+                
+            });
+        });
+        response.data.items.forEach(item => {
+            if (item.track.artists[0].id in songList) {
+                songList[item.track.artists[0].id].push(item.track.name);
+            } else {
+                songList[item.track.artists[0].id] = []
+                songList[item.track.artists[0].id].push(item.track.name);
+            }
+        });
+    }
+    let artistIdSorted = Object.entries(artistId_ls).sort((a, b) => {
+        return b[1] - a[1]; // Compare the values
+    });
+    let topArtists = []
+    if (artistIdSorted.length >=3) {
+        for(let i=0; i<3; i++) {
+            topArtists.push(artistIdSorted.at(i).at(0))
+        }
+    }
+    const combinedString = topArtists.join(',');
+    const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
+        headers: {
+            'Authorization': `Bearer ${ACCESS_TOKEN}`
+        }
+    });
+
+    const artistRows = artistDetails.data.artists;
+    const artistData = artistRows.map(response => ({
+        id: response.id,
+        name: response.name,
+        type: response.genres.at(0),
+        song: songList[response.id].length>=3 ? songList[response.id].slice(0, 3) : [],
+        image: response.images.at(0).url // Taking the last image as an example
+    }));
+
+    res.json(artistData);
+})
+// router.get('/v0/top3-artist', async(req, res) => {
+//     // console.log("top3", req.session);
+//     //const userId = req.session.spotifyId
+//     const userId = req.session.user.spotifyId;
+//     const ACCESS_TOKEN = await getAccessToken(userId);
+
+//     // update user's playlist info
+//     await updatePlaylist(userId);
+
+//     // get user's all playlist
+//     const playlist_ls = await getPlaylist(userId);
+
+//     // store artist object as list
+//     let artistId_ls = {};
+//     let songList = {}
+
+//     for(const playlist of playlist_ls) {
+//         const playlist_id = playlist.id
+//         const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+//             headers: {
+//                 'Authorization': `Bearer ${ACCESS_TOKEN}`
+//             }
+//         });
+//         response.data.items.forEach(item => {
+//             item.track.artists.forEach(artist => {
+//                 if(artist.id in artistId_ls) {
+//                     artistId_ls[artist.id] += 1;
+//                 } else {
+//                     artistId_ls[artist.id] = 1;
+//                 }
+                
+//             });
+//         });
+//         response.data.items.forEach(item => {
+//             if (item.track.artists[0].id in songList) {
+//                 songList[item.track.artists[0].id].push(item.track.name);
+//             } else {
+//                 songList[item.track.artists[0].id] = []
+//                 songList[item.track.artists[0].id].push(item.track.name);
+//             }
+//         });
+//     }
+//     let artistIdSorted = Object.entries(artistId_ls).sort((a, b) => {
+//         return b[1] - a[1]; // Compare the values
+//     });
+//     let topArtists = []
+//     if (artistIdSorted.length >=3) {
+//         for(let i=0; i<3; i++) {
+//             topArtists.push(artistIdSorted.at(i).at(0))
+//         }
+//     }
+//     const combinedString = topArtists.join(',');
+//     const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
+//         headers: {
+//             'Authorization': `Bearer ${ACCESS_TOKEN}`
+//         }
+//     });
+
+//     const artistRows = artistDetails.data.artists;
+//     const artistData = artistRows.map(response => ({
+//         id: response.id,
+//         name: response.name,
+//         type: response.genres.at(0),
+//         song: songList[response.id].length>=3 ? songList[response.id].slice(0, 3) : [],
+//         image: response.images.at(0).url // Taking the last image as an example
+//     }));
+
+//     res.json(artistData);
+// })
 
 module.exports = router;

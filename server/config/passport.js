@@ -44,10 +44,10 @@ passport.use(
             passReqToCallback: true,
         },
         async function(req, accessToken, refreshToken, profile, done) {
-            // console.log("profile", profile.photos[1]);
             let avatar = null;
+            
             if(profile.photos) {
-                avatar = profile.photos[0].value
+                avatar = profile.photos[1].value;
             }
             const user = await User.findOneAndUpdate(
                 {spotifyId: profile.id},
@@ -61,19 +61,15 @@ passport.use(
                     provider: profile.provider,
                 }
             );
-            // console.log(user);
-            // req.session.accessToken = accessToken; // Set tokens here
-            // req.session.refreshToken = refreshToken;
-            req.session.userId = profile.id
-            // req.session.userId = profile.id;
-            console.log('auth', req.session);
+            req.session.user = {}
+            req.session.user.accessToken = accessToken; // Set tokens here
+            req.session.user.spotifyId = profile.id
             if (!user) {
                 const newUser = await User.create({
-                    // _id: new mongoose.Types.ObjectId(profile.id),
                     spotifyId: profile.id,
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
-                    avatar: profile.photos.photos[0].value,
+                    avatar: avatar,
                     country: profile.country,
                     accessToken: accessToken,
                     refreshToken: refreshToken,

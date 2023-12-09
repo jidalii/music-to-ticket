@@ -64,6 +64,7 @@ router.get("/user-id", (req, res) => {
 router.get("/user-data", (req,res) => {
     if (req.session.user) {
         const userId = req.session.user.spotifyId
+        const accessToken = req.session.user.accessToken;
         const username = req.session.user.username;
         const email = req.session.user.email
         const avatar = req.session.user.avatar
@@ -71,7 +72,8 @@ router.get("/user-data", (req,res) => {
             username: username,
             email: email,
             avatar: avatar,
-            userId: userId
+            userId: userId,
+            accessToken: accessToken
         });
     } else {
         res.status(404).send('User not found');

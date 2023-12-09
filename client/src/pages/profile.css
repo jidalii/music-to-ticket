@@ -1,0 +1,216 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin:0;
+    padding:0;
+    
+  }
+  
+  /* Style header, main content, and footer */
+  main {
+    width: 100%;
+    /*max-width: 1200px;*/
+    margin:0;
+    
+  }
+
+
+  
+  /* Style profile header */
+  .profile-header {
+    text-align:left;
+    background: linear-gradient(to bottom, rgb(182, 215, 255), rgb(80, 109, 145));
+    display: block;
+    height:38vh;
+    position: relative;
+    /*margin-left:-20vh;*/
+    left:0;
+
+  }
+  .pic {
+    position: absolute;
+    top: 50%;
+    left: 23%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    overflow: hidden; /* Ensures the border-radius works as expected */
+    border-radius: 50%;
+    box-shadow: 10px 10px 30px rgb(80, 109, 145);
+
+    
+  }
+  .pic img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+  }
+  .profile-header h2,
+  .profile-header h3{
+    text-indent: 2vh;
+    margin-left: -15vh;
+
+  }
+
+  .profile-header h2 {
+    margin-bottom:2vh;
+    color:seashell;
+    display: block;
+    padding-top: 15vh;
+    font-weight: 600;
+    font-size:x-large;
+    font-family:Arial, Helvetica, sans-serif;
+  }
+  .profile-header h3 {
+    margin-bottom: 5vh;
+    color:seashell;
+    display: block;
+    margin-top: 2vh;
+    font-weight:bolder;
+    font-family:sans-serif;
+    width:fit-content;
+    font-size: 80px;
+  
+
+  }
+  .profile-header p {
+    margin-bottom: 10vh;
+    margin-left: -15vh;
+    color:seashell;
+    display: block;
+    font-weight:bolder;
+
+  }
+  .user-info{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Style playlist section 
+  .playlist-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    background-color:whitesmoke;
+  }*/
+  
+
+
+  .music-preferences{
+    height:400px;
+    background-color: white;
+
+  }
+
+  .playlists h3{
+    margin-top:5vh;
+    text-align: left;
+    margin-left: 5vh;
+    color: rgb(61, 58, 58);
+    font-weight: bold;
+    font-size: 3vh;
+    margin-bottom: 1px;
+    font-family: fantasy;
+    font-weight: bolder;
+  }
+  #top-container{
+    display: flex;
+    flex-direction: row;
+  }
+
+  #top1,
+  #top2,
+  #top3{
+    margin-top: 3%;
+    align-items: center;
+    margin-left: 4%;
+    width:400px;
+    /*background-color:white;*/
+    backdrop-filter: blur(2px) brightness(96%);
+    box-shadow: 0px 5px 10px gray;
+    border-radius: 25px;
+    height:250px;
+  }
+
+  #img-top1,
+  #img-top2,
+  #img-top3{
+    top:20px;
+    border-radius: 50%; /* Use 50% to create a circle, adjust as needed */
+    width: 150px; 
+    height: 150px; 
+    object-fit: cover; /* This property ensures that the image covers the entire container */
+    position: relative;
+    margin-left:5%;/*-25vh*/
+  }
+  #name-top1,
+  #name-top2,
+  #name-top3{
+    /* Adjust font size as needed */
+    color:#333; 
+    margin-left:5%;/*-25vh*/
+    font-size:4vh;
+    font-family:sans-serif; 
+    font-weight:800;
+    margin-top: 20px;
+    
+  }
+#songs-top1,
+#songs-top2,
+#songs-top3{
+  display: flex;
+  flex-direction: column;
+  margin-top: -42%; 
+  text-indent: 25vh;
+  font-family:sans-serif;
+  font-weight:600;
+  font-size: x-large;
+}
+#songs-top1 li,
+#songs-top2 li,
+#songs-top3 li
+{
+  margin-bottom: 1vh;
+  color:dimgray;
+}
+/*#top2{
+  margin-top: -15%;
+  align-items: center;
+  margin-left: 50%;
+  width:400px;
+  /*background-color:white;*/
+  /*display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(2px) brightness(95%);
+  box-shadow: 0px 10px 10px gray;
+  border-radius: 25px;
+  height:230px;
+
+}*/
+/*#img-top2 {
+  top:10px;
+  border-radius: 50%; /* Use 50% to create a circle, adjust as needed */
+  /*width: 150px; 
+  height: 150px; 
+  object-fit: cover; 
+  position: relative;
+  margin-left:-25vh;
+}*/
+
+  /* Style the playlist section */
+
+  
+
+  
+  .playlists ul {
+    list-style-type: none;
+  }
+  
+
+

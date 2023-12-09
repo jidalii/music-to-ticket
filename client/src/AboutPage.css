@@ -1,0 +1,166 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+header {
+    background-color: #fff;
+    /* box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); */
+}
+
+#h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 28px;
+    margin-top: 70px;
+}
+
+#h11 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 60px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+#h12 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#h2{
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+}
+
+#h2p{
+    color: #666;
+    font-size: 18px;
+}
+
+#a {
+    color: rgb(90, 151, 244); /* Set the color to blue */
+    text-decoration: none; /* Optional: Remove underline */
+    font-size: 16px;
+}
+
+.colored-text1 {
+    font-weight: bold;
+    color: #4285f4; /* Change this to the desired color */
+}
+
+.colored-text2 {
+    font-weight: bold;
+    color: #f44242; /* Change this to the desired color */
+}
+
+.colored-text3 {
+    font-weight: bold;
+    color: #31b214; /* Change this to the desired color */
+}
+
+.logo {
+    text-align: center;
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+#main {
+    max-width: 1200px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #fff;
+    align-items: center;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 20px; /* Add padding to separate content from the border */
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.textsection{
+    display: block;
+}
+
+#section1 {
+    align-items: center;
+    margin-top: 40px;
+    background-color: white; /* Yellow */
+}
+
+#unreal{
+    font-size: 22px;
+    margin-top: 60px;
+    align-items: center;
+
+}
+
+#new{
+    margin-bottom: 60px;
+    color: black;
+}
+
+#section3 {
+    text-align: left;
+    background-color: white; 
+    margin-right: 0%;
+}
+
+#section4 {
+    align-items:end;
+    background-color: white;
+}
+
+#rightimg{
+    float: right;
+}
+
+.section img {
+    max-width: 100%;
+    margin-right: 20px;
+    object-fit: cover;
+    display: block;
+    /* Adjust styling as needed */
+}
+
+
+main h2 {
+    color: #333;
+    font-size: 26px;
+    font-weight: 550;
+    /* border-bottom: 2px solid #4285f4; */
+    padding-bottom: 5px;
+}
+
+#login{
+    color: rgb(90, 151, 244);
+    font-weight: 550;
+
+}
+
+#blogin{
+    margin-top: 2px;
+}
+
+main p {
+    margin-top: 150px;
+    color: #666;
+}
+
+#loginbutton-about{
+    margin-top: 40px;
+    font-size: 20px;
+    color: #fff;
+    
+}
