@@ -28,6 +28,7 @@ interface Artist {
 function fetchArtistList() {
     const [artistList, setArtistList] = useState<Artist[] | null>(null);
     // const [artists, ticket] = artistList || [null, null];
+    const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
     useEffect(() => {
         const fetchArtistData = async () => {
