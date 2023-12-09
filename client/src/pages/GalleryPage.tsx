@@ -64,18 +64,14 @@ function fetchArtistList() {
                   <div  id="artist-info" className="min-w-3 flex-auto">
                     <p id="artist-name" className="text-3xl font-semibold leading-16 text-gray-900 w-180">{artist.name}</p>
                     {/*<p className="mt-1 truncate text-xs leading-5 text-gray-500">{artist.id}</p>*/}
-                    {selectedArtist === artist && (
-                  <div className="popup-box">
+                    {/* {selectedArtist === artist && (
+                  <div className="popup-box"> */}
                     {/* You can add additional information or components here */}
-                   popup-box for {artist.name}
-                   <p>Wanting和cc是两个薯条脑袋嘿嘿 &#127839;</p>
+                   {/* popup-box for {artist.name}
+                   <p>Wanting和cc是两个薯条脑袋嘿嘿 &#127839;</p> */}
 
-                  </div>
-                )}
-
-                  </div>
-                </div>
-               {/* </Link> */}
+                  {/* </div>
+                )} */}
                 <div>
                   {artist.ticket.map((ticket, index) => (
                       <div key={index}>
@@ -91,6 +87,8 @@ function fetchArtistList() {
                       }
                       </div>
                   ))}
+                </div>
+                  </div>
                 </div>
               </li>
             ))}
