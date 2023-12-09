@@ -54,16 +54,9 @@ router.get('/event/:artist', async (req, res) => {
 router.get('/events', async (req, res) => {
     try {
         const user_id = req.session.user.userId;
-        // const user_id = "31lbzo6ubfwku5s5xxmlhaxxooz4";
         const artistNames = await getArtistNamesFromDB(user_id);
-
-        //console.log(artistNames);
-
+        
         let allArtistsEvents = [];
-
-        // const eventsPromises = artistNames.map(name => axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`)
-        // );
-
         for (const [index, name] of artistNames.entries()){
             try{
                 const response = await axios.get(`${ticketmaster_root_url}events.json?apikey=${API_KEY}&keyword=${encodeURIComponent(name)}`);
