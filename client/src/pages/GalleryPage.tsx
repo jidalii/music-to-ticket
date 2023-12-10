@@ -56,7 +56,7 @@ function fetchArtistList() {
     if (artistList !== null){
       return (
         <div className = "flex justify-center w-full">
-          <ul role="list" className="divide-y divide-gray-100 flex flex-col items-center">
+           <ul id= "artistlist" role="list" className="artistlist">
             {artistList.map((artist) => (
               <li key={artist.id} className="flex items-center gap-x-6 py-5" onMouseEnter={() => handleMouseEnter(artist)}
               onMouseLeave={handleMouseLeave}>
@@ -72,14 +72,14 @@ function fetchArtistList() {
                       {/* <p>Wanting和cc是两个薯条脑袋嘿嘿 &#127839;</p> */}
                         <div>
                           {artist.ticket.map((ticket, index) => (
-                            <div key={index}>
+                            <div id="concert" key={index}>
                               {ticket !== null ? (
                                 // Access event properties here, e.g., ticket.events[0].date
-                                <ol>
+                                <ol id="ticket-info">
                                   <div className="blank-line1"></div>
-                                  <li>{index+1}. {ticket.name}</li>
+                                  <li className="time">{index+1}. {ticket.name}</li>
                                   <p>{ticket.date} {ticket.time}</p>
-                                  <a href={ticket.url} target="_blank">
+                                  <a className="button" href={ticket.url} target="_blank">
                                     <button className='ticket-button'>click me to get ticket!</button>
                                   </a>
                                   <div className="blank-line"></div>

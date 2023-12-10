@@ -78,9 +78,21 @@
   /* color:ivory; */
   width:60%;
   padding:3%;
-  box-shadow: 5px 5px 10px gray;
+  box-shadow: 5px 4px 10px gray;
+  margin-left:7vh;
+  margin-top: 1vh;
+}
+
+#ticket-info p{
+    text-align: center;
+    margin-top: 1vh;
 }
 
 .intro{
     font-size:20px;
 }
+#concert{
+    width: 100%;
+    border-bottom: 2px solid #e2e8f0;
+}
+

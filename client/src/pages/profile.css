@@ -167,10 +167,10 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: -42%; 
-  text-indent: 25vh;
+  text-indent: 23vh;
   font-family:sans-serif;
   font-weight:600;
-  font-size: x-large;
+  font-size: 3vh;
 }
 #songs-top1 li,
 #songs-top2 li,
