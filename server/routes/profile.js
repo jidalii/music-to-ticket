@@ -14,7 +14,6 @@ const checkAuth = (req, res, next) => {
 
 router.get("/", checkAuth, (req, res) => {
     console.log(req.user);
-    // res.render("profile", { user: req.user, imageUrl: req.user.avatarUrl });
     req.session.user = req.user
     res.redirect("http://localhost:5173/profile");
 });

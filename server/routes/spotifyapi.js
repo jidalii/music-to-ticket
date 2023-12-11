@@ -118,7 +118,6 @@ router.get('/v0/artist', async (req, res)=> {
         // params for api call
         console.log("v0/artist", req.session.user);
         const userId = req.session.user.spotifyId;
-        // const ACCESS_TOKEN = await getAccessToken(userId);
         const ACCESS_TOKEN = req.session.user.accessToken;
 
         // update user's playlist info
@@ -154,7 +153,6 @@ router.get('/v0/artist', async (req, res)=> {
 
         const artistRows = artistDetails.data.artists;
         const artistNameList = artistRows.map(response => response.name);
-        // console.log(artistNameList);
         const artistData = artistRows.map(response => ({
             id: response.id,
             name: response.name,

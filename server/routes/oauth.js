@@ -6,7 +6,6 @@ router.get("/login", (req, res) => {
     if (req.user) {
         res.redirect("/profile");
     }
-    // print(req.user)
     res.render("login");
 });
 
@@ -33,8 +32,6 @@ router.get(
 router.get("/spotify/redirect", passport.authenticate('spotify', { failureRedirect: '/auth/error' }),
     function (req, res) {
         console.log("Authentication successful. Redirecting to profile...");
-        // console.log(req.user);
-        // res.render("profile", { user: req.user});
         req.session.user = req.user
         res.redirect("http://localhost:5173/profile");
     }
