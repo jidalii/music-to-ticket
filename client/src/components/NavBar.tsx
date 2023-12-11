@@ -20,7 +20,6 @@ function NavBar() {
         try {
             const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
             setUser(response.data);
-            // USER_ID = response.data
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -36,7 +35,6 @@ function NavBar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
           
-            {/* Center links horizontally and add spacing */}
             
             <div className="flex justify-center space-x-20">
               <Link className="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium" to="/">Home</Link>

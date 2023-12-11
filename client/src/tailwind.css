@@ -8,7 +8,6 @@ body{
 
 :root {
   height: 100%;
-  /*background:radial-gradient(closest-corner at center,rgb(175, 174, 174),white);*/
   background:linear-gradient(in oklab,#32ac32,white);
   color-scheme: dark;
 }
@@ -28,7 +27,6 @@ body{
 #loginpage{
   font-style:oblique;
   font-weight: bolder;
-  /*color:#228B22;*/
   color:#2c9f2c;
   font-size: 7vh;
 }
@@ -47,9 +45,9 @@ body{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color:whitesmoke; /*Set the background color for the box */
-  height: 50vh; /* Set the height to 50% of the viewport height */
-  width: 110vh; /* Set the width to 110% of the viewport height */
+  background-color:whitesmoke; 
+  height: 50vh; 
+  width: 110vh; 
   z-index: 1;
   backdrop-filter: blur(2px) brightness(95%);
   box-shadow: 10px 10px 30px gray;

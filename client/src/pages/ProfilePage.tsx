@@ -31,7 +31,7 @@ function ProfilePage() {
                 console.log(responseArtist.data);
                 setUserAndArtist([responseUser.data, responseArtist.data]);
             } catch (error) {
-                setUserAndArtist([null, null]); // or handle the error in another way
+                setUserAndArtist([null, null]); 
                 console.error('Error fetching data:', error);
             }
       };
