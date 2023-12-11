@@ -55,6 +55,7 @@ passport.use(
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
                     avatar: avatar,
+                    accessToken: accessToken,
                     country: profile.country,
                     provider: profile.provider,
                 }
@@ -68,6 +69,7 @@ passport.use(
                     username: profile.displayName,
                     email: profile.emails?.[0].value,
                     avatar: avatar,
+                    accessToken: accessToken,
                     country: profile.country,
                     provider: profile.provider,
                 });

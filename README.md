@@ -26,7 +26,7 @@ We would be using MangoDB for the database
 
 ## 6. Framework
 
-- frontend: TypeScript
+- frontend: React.ts
 - backend: Express.js
 
 ## 7. Get ready to run

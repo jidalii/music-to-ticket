@@ -48,7 +48,6 @@ app.use(session({
         path: '/',
         httpOnly: true,
         maxAge: 14 * 24 * 60 * 60 * 1000, // cookie expiration in milliseconds
-        // secure: true,
         secure: false,
         sameSite: null
     }

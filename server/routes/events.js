@@ -49,7 +49,6 @@ router.get('/event/:artist', async (req, res) => {
 })
 
 
-
 // New route to get events for all artists in MongoDB
 router.get('/events', async (req, res) => {
     try {
@@ -133,7 +132,9 @@ router.get('/events', async (req, res) => {
     }
 });
 
+
 //:) nothing
 router.get('/events/fun', (req, res) => {res.status(418).send("I'm a teapot"); });
+
 
 module.exports = router;

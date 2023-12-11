@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import "./profile.css";
 
@@ -19,26 +19,6 @@ interface Artist {
 function ProfilePage() {
     const [userAndArtist, setUserAndArtist] = useState<[User | null, Artist | null] | null>(null);
     const [user, artist] = userAndArtist || [null, null];
-    
-    // useEffect(() => {
-    //     const fetchUserData = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:8000/auth/user-data', { withCredentials: true });
-    //             setUserAndArtist(response.data);
-    //             console.log(response.data);
-
-    //             //const response_artist = await axios.get('http://localhost:8000/spotify/v0/top3-artist', { withCredentials: true }); 
-    //             //setArtist(response_artist.data);
-    //             //console.log(response_artist.data);
-    //         } catch (error) {
-    //             console.error('Error fetching user data:', error);
-    //         }
-    //     };
-
-    //     fetchUserData();
-    // }, []);
-    // const [userAndArtist, setUserAndArtist] = useState<[User | null, Artist | null] | null>(null);
-    // const [user, artist] = userAndArtist || [null, null];
     
     useEffect(() => {
         const fetchUserData = async () => {
@@ -73,9 +53,6 @@ function ProfilePage() {
                                 <h3 className='text-8xl profile-name'>
                                     {user.username}
                                 </h3>
-                                {/*<p className='text-2xl'>
-                                    Email: {user.email} 
-                                    \</p>*/}
                             </div >
                             
                             <div className="pic">
@@ -86,13 +63,6 @@ function ProfilePage() {
                     </header>
                     
                         <div className="music-preferences">
-
-                                {/*<ul>
-                                    {user.favoriteGenres.map((genre) => (
-                                        <li key={genre}>{genre}</li>
-                                    ))}
-                                    </ul>
-                                    {/* Add create/edit/delete playlist functionality */}
                         
                         <div className="playlists">
                             <h3>Touch Your Soul, You May Want to Listen Now &#x1F3A7;...</h3>
@@ -126,19 +96,7 @@ function ProfilePage() {
                                 </div>
                             </div>
                         </div>
-                        {/*<div>
-                        <h3>Want to see their concerts ?</h3>
-                                    </div>*/}
-                            {/*<ul>
-                            {user.playlists.map((playlist) => (
-                                <li key={playlist.id}>{playlist.name}</li>
-                            ))}
-                            </ul>
-                            {/* Add create/edit/delete playlist functionality */} 
                         </div>
-
-
-    
                 </body>
 
                 )}
