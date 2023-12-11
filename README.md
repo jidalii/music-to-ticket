@@ -1,5 +1,8 @@
 # CS411 Group Project
 
+## 1. Team
+Jida Li, Runqing Cui, Wanting Ma, Yuanman Mu
+
 ## 1. Description
 
 Our project is an web application of users' own spotify library with info about the artists' concerts based on their playlists and saved albums.
