@@ -1,5 +1,7 @@
 # CS411 Group Project
 
+- link for the demo video: https://drive.google.com/file/d/1uLln5RkRZ5MiQZSWu3nQftBOn2Y73JSK/view?usp=share_link
+
 ## 1. Team
 Jida Li, Runqing Cui, Wanting Ma, Yuanman Mu
 
