@@ -56,8 +56,6 @@ passport.use(
                     email: profile.emails?.[0].value,
                     avatar: avatar,
                     country: profile.country,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
                     provider: profile.provider,
                 }
             );
@@ -71,8 +69,6 @@ passport.use(
                     email: profile.emails?.[0].value,
                     avatar: avatar,
                     country: profile.country,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
                     provider: profile.provider,
                 });
                 if (newUser) {

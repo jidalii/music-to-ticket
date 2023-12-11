@@ -8,22 +8,22 @@ const ticketmaster_root_url = "https://app.ticketmaster.com/discovery/v2/"
 const API_KEY = process.env.TICKETMASTER_CLIENT_ID
 
 /**
- * Retrieves access_token for a given user ID from the User model.
+ * Retrieves access_token for a given user)d from the User model.
  * @param {string} userId - The ID of the user whose playlist is to be retrieved.
- * @returns {string} access_token of the user with id `userId`
+ * @returns {string} access_token of `userId`
  */
 const getAccessToken = async (userId) => {
-    // console.log(userId); 
+
     const user = await User.findOne(
         {
             spotifyId: userId
         }
-    )
+    ) // find user in mongodb with userId
 
-    if (!user) {
-        console.log('user not found');
+    if (user === null) {
+        return res.status(404).send('user not found');
     }
-    console.log(user);
+    // console.log(user);
     if (!user.accessToken) {
         return res.status(404).send('Access token not found');
     }
@@ -37,7 +37,6 @@ const getAccessToken = async (userId) => {
 const updatePlaylist = async (userId) => {
     try{
         // 1. get userId & access_token
-        // const userId = req.query.userId
         const accessToken = await getAccessToken(userId);
 
         // 2. api call -> get playlists info
@@ -249,6 +248,8 @@ router.get('/v0/artist', async (req, res)=> {
     }
 
 })
+
+
 router.get('/v0/top3-artist', async(req, res) => {
     console.log("top3-artist", req.session.user);
     const userId = req.session.user.spotifyId
@@ -318,74 +319,5 @@ router.get('/v0/top3-artist', async(req, res) => {
 
     res.json(artistData);
 })
-// router.get('/v0/top3-artist', async(req, res) => {
-//     // console.log("top3", req.session);
-//     //const userId = req.session.spotifyId
-//     const userId = req.session.user.spotifyId;
-//     const ACCESS_TOKEN = await getAccessToken(userId);
-
-//     // update user's playlist info
-//     await updatePlaylist(userId);
-
-//     // get user's all playlist
-//     const playlist_ls = await getPlaylist(userId);
-
-//     // store artist object as list
-//     let artistId_ls = {};
-//     let songList = {}
-
-//     for(const playlist of playlist_ls) {
-//         const playlist_id = playlist.id
-//         const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
-//             headers: {
-//                 'Authorization': `Bearer ${ACCESS_TOKEN}`
-//             }
-//         });
-//         response.data.items.forEach(item => {
-//             item.track.artists.forEach(artist => {
-//                 if(artist.id in artistId_ls) {
-//                     artistId_ls[artist.id] += 1;
-//                 } else {
-//                     artistId_ls[artist.id] = 1;
-//                 }
-                
-//             });
-//         });
-//         response.data.items.forEach(item => {
-//             if (item.track.artists[0].id in songList) {
-//                 songList[item.track.artists[0].id].push(item.track.name);
-//             } else {
-//                 songList[item.track.artists[0].id] = []
-//                 songList[item.track.artists[0].id].push(item.track.name);
-//             }
-//         });
-//     }
-//     let artistIdSorted = Object.entries(artistId_ls).sort((a, b) => {
-//         return b[1] - a[1]; // Compare the values
-//     });
-//     let topArtists = []
-//     if (artistIdSorted.length >=3) {
-//         for(let i=0; i<3; i++) {
-//             topArtists.push(artistIdSorted.at(i).at(0))
-//         }
-//     }
-//     const combinedString = topArtists.join(',');
-//     const artistDetails= await axios.get(`https://api.spotify.com/v1/artists?ids=${combinedString}`, {
-//         headers: {
-//             'Authorization': `Bearer ${ACCESS_TOKEN}`
-//         }
-//     });
-
-//     const artistRows = artistDetails.data.artists;
-//     const artistData = artistRows.map(response => ({
-//         id: response.id,
-//         name: response.name,
-//         type: response.genres.at(0),
-//         song: songList[response.id].length>=3 ? songList[response.id].slice(0, 3) : [],
-//         image: response.images.at(0).url // Taking the last image as an example
-//     }));
-
-//     res.json(artistData);
-// })
 
 module.exports = router;
