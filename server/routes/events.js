@@ -123,7 +123,6 @@ router.get('/events', async (req, res) => {
         await gallery.save();
         const artists = await Spotify.findOne({spotifyId: user_id})
 
-        // res.render('events', { events: allArtistsEvents });
         res.json({ events: allArtistsEvents })
 
     } catch (error) {
@@ -132,9 +131,6 @@ router.get('/events', async (req, res) => {
     }
 });
 
-
-//:) nothing
-router.get('/events/fun', (req, res) => {res.status(418).send("I'm a teapot"); });
 
 
 module.exports = router;
